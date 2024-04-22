@@ -1,0 +1,41 @@
+﻿@page "/login"
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<h3>Login</h3>
+
+@if (loginError)
+{
+    <p style="color: red;">Invalid username or password.</p>
+}
+
+<form>
+    <label for="username">Username:</label>
+    <input type="text" id="username" @bind="username" />
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" @bind="password" />
+
+    <button type="submit" @onclick="LogIn">Login</button>
+</form>
+
+@code {
+    private string username;
+    private string password;
+    private bool loginError;
+
+    private void LogIn()
+    {
+        // Your authentication logic goes here
+        if (username == "admin" && password == "password")
+        {
+            // Successful login
+            NavigationManager.NavigateTo("/", true, true);
+        }
+        else
+        {
+            // Failed login
+            loginError = true;
+        }
+    }
+}
