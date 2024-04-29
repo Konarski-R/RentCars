@@ -10,5 +10,11 @@
         public bool IsAutomatic { get; set; }
         public double HorsePwr { get; set; }
 
+        public Car(long id, string name, string brand)
+        {
+            CID = id;
+            CarName = name;
+            CarBrand = brand;
+        }
     }
 }
