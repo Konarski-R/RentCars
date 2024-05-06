@@ -2,7 +2,7 @@
 {
 	public class User
 	{
-		public long UID { get; set; }
+		public int UID { get; set; }
 		public string Firstname { get; set; }
 		public string Lastname { get; set; }
 		public string Email { get; set; }
@@ -15,13 +15,13 @@
 		public DateTime Birthdate { get; set; }
 		public string BirthCity { get; set; }
 		public string BirthCountry { get; set; }
-		public long DLNumber { get; set; }
+		public int DLNumber { get; set; }
 		public DateTime DLIssueDate { get; set; }
 		public DateTime DLExpiryDate { get; set; }
 		public string DLIssueCity { get; set; }
 		public string DLIssueCountry { get; set; }
-		public long IDNumber { get; set; }
-		public long PassportNumber { get; set; }
+		public int IDNumber { get; set; }
+		public int PassportNumber { get; set; }
 		public DateTime PassportExpiryDate { get; set; }
 		public DateTime PassportIssueDate { get; set; }
 		public string PassportIssueCity { get; set; }

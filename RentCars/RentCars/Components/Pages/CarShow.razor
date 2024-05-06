@@ -1,6 +1,7 @@
 ﻿@page "/carshow"
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
+@using RentCars.Model
 
 <PageTitle>Cars</PageTitle>
 <style>
@@ -30,8 +31,9 @@
 
 
 @code{
-    public List<Car> carlist = new List<Car> { new Car(1, "f40", "Ferrari"), new Car(1, "sprinter", "Toyota") };
+    static CarDBUsage database = new();
 
+    public List<Car> carlist = database.SelectFromCarTable();
     public void carchosen(){
 
     }

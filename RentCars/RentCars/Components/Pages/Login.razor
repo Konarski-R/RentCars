@@ -23,9 +23,13 @@
     private string username;
     private string password;
     private bool loginError;
+    static UserDBUsage db;
+
 
     private void LogIn()
     {
+
+
         // Your authentication logic goes here
         if (username == "admin" && password == "password")
         {
