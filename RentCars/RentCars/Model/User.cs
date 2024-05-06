@@ -9,7 +9,7 @@
 		public string Password { get; set; }
 		public string Phone { get; set; }
 		public string Address { get; set; }
-		public byte ZIP { get; set; }
+		public int ZIP { get; set; }
 		public string City { get; set; }
 		public string Country { get; set; }
 		public DateTime Birthdate { get; set; }
