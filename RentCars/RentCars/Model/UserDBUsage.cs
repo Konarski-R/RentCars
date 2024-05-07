@@ -37,7 +37,7 @@ namespace RentCars.Model
             }
         }
 
-        public void InsertIntoUserTable(string InputUsername, string key, string firstName, string lastName, string email, string password, string phone, string address, int zip, string city, string country, DateTime birthDate, string birthCity, string birthCountry, int dlNumber, DateTime dlIssueDate, DateTime dlExpiryDate, string dlIssueCity, string dlIssueCountry, int idNumber, int passportNumber, DateTime passportExpiryDate, DateTime passportIssueDate, string passportIssueCity, string passportIssueCountry)
+        public void InsertIntoUserTable(string firstName, string lastName, string email, string password, string phone, string address, int zip, string city, string country, DateTime birthDate, string birthCity, string birthCountry, int dlNumber, DateTime dlIssueDate, DateTime dlExpiryDate, string dlIssueCity, string dlIssueCountry, int idNumber, int passportNumber, DateTime passportExpiryDate, DateTime passportIssueDate, string passportIssueCity, string passportIssueCountry)
         {
             OpenConnection();
 

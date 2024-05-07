@@ -2,11 +2,183 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
+<style>
+
+
+</style>
+
+
+
 <h3>Register</h3>
 
+<div class="form-group">
+    <label for="Firstname">First Name:</label>
+    <input id="Firstname" @bind="@Firstname" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="Lastname">Last Name:</label>
+    <input id="Lastname" @bind="@Lastname" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="Email">Email:</label>
+    <input id="Email" @bind="@Email" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="Password">Password:</label>
+    <input id="Password" type="password" @bind="@Password" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="Phone">Phone:</label>
+    <input id="Phone" @bind="@Phone" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="Address">Address:</label>
+    <input id="Address" @bind="@Address" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="ZIP">ZIP:</label>
+    <input id="ZIP" @bind="@ZIP" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="City">City:</label>
+    <input id="City" @bind="@City" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="Country">Country:</label>
+    <input id="Country" @bind="@Country" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="Birthdate">Birthdate:</label>
+    <input id="Birthdate" @bind="@Birthdate" type="date" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="BirthCity">Birth City:</label>
+    <input id="BirthCity" @bind="@BirthCity" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="BirthCountry">Birth Country:</label>
+    <input id="BirthCountry" @bind="@BirthCountry" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="DLNumber">Driver License Number:</label>
+    <input id="DLNumber" @bind="@DLNumber" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="DLIssueDate">Driver License Issue Date:</label>
+    <input id="DLIssueDate" @bind="@DLIssueDate" type="date" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="DLExpiryDate">Driver License Expiry Date:</label>
+    <input id="DLExpiryDate" @bind="@DLExpiryDate" type="date" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="DLIssueCity">Driver License Issue City:</label>
+    <input id="DLIssueCity" @bind="@DLIssueCity" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="DLIssueCountry">Driver License Issue Country:</label>
+    <input id="DLIssueCountry" @bind="@DLIssueCountry" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="IDNumber">ID Number:</label>
+    <input id="IDNumber" @bind="@IDNumber" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="PassportNumber">Passport Number:</label>
+    <input id="PassportNumber" @bind="@PassportNumber" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="PassportExpiryDate">Passport Expiry Date:</label>
+    <input id="PassportExpiryDate" @bind="@PassportExpiryDate" type="date" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="PassportIssueDate">Passport Issue Date:</label>
+    <input id="PassportIssueDate" @bind="@PassportIssueDate" type="date" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="PassportIssueCity">Passport Issue City:</label>
+    <input id="PassportIssueCity" @bind="@PassportIssueCity" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="PassportIssueCountry">Passport Issue Country:</label>
+    <input id="PassportIssueCountry" @bind="@PassportIssueCountry" class="form-control" />
+</div>
+
+<button @onclick="RegisterBtn()" class="btn btn-primary" disabled="@(!userIsValid())">Register</button>
 @code {
-	static UserDBUsage db;
+    private string Firstname;
+    private string Lastname;
+    private string Email;
+    private string Password;
+    private string Phone;
+    private string Address;
+    private int ZIP;
+    private string City;
+    private string Country;
+    private DateTime Birthdate;
+    private string BirthCity;
+    private string BirthCountry;
+    private int DLNumber;
+    private DateTime DLIssueDate;
+    private DateTime DLExpiryDate;
+    private string DLIssueCity;
+    private string DLIssueCountry;
+    private int IDNumber;
+    private int PassportNumber;
+    private DateTime PassportExpiryDate;
+    private DateTime PassportIssueDate;
+    private string PassportIssueCity;
+    private string PassportIssueCountry;
 
+    static UserDBUsage db = new();
 
+    private bool userIsValid()
+    {
+        if (!string.IsNullOrWhiteSpace(Firstname) && !string.IsNullOrWhiteSpace(Lastname)
+        && !string.IsNullOrWhiteSpace(Email) && !string.IsNullOrWhiteSpace(Password)
+        && !string.IsNullOrWhiteSpace(Phone) && !string.IsNullOrWhiteSpace(Address)
+        && ZIP != 0 && !string.IsNullOrWhiteSpace(City) && !string.IsNullOrWhiteSpace(Country)
+        && Birthdate != default && !string.IsNullOrWhiteSpace(BirthCity) && !string.IsNullOrWhiteSpace(BirthCountry)
+        && DLNumber != 0 && DLIssueDate != default && DLExpiryDate != default
+        && !string.IsNullOrWhiteSpace(DLIssueCity) && !string.IsNullOrWhiteSpace(DLIssueCountry)
+        && IDNumber != 0 && PassportNumber != 0 && PassportExpiryDate != default
+        && PassportIssueDate != default && !string.IsNullOrWhiteSpace(PassportIssueCity)
+        && !string.IsNullOrWhiteSpace(PassportIssueCountry))
+            return true;
+        else
+            return false;
+    }
 
+    public void RegisterBtn()
+    {
+        db.InsertIntoUserTable(Firstname, Lastname, Email, Password, Phone, Address, ZIP,
+            City, Country, Birthdate, BirthCity, BirthCountry, DLNumber, DLIssueDate,
+            DLExpiryDate, DLIssueCity, DLIssueCountry, IDNumber, PassportNumber,
+            PassportExpiryDate, PassportIssueDate, PassportIssueCity, PassportIssueCountry);
+
+        NavigationManager.NavigateTo("/", true, true);
+
+    }
 }

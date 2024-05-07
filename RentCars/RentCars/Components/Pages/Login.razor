@@ -1,4 +1,5 @@
 ﻿@page "/login"
+@using RentCars.Model
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
@@ -26,20 +27,27 @@
     static UserDBUsage db;
 
 
+
     private void LogIn()
     {
+        UserDBUsage dBUser = new();
+        User user = dBUser.SelectFromUserTable(username);
 
-
-        // Your authentication logic goes here
-        if (username == "admin" && password == "password")
+        if (user != null)
         {
-            // Successful login
             NavigationManager.NavigateTo("/carshow", true, true);
         }
-        else
-        {
-            // Failed login
-            loginError = true;
-        }
+
+        // // Your authentication logic goes here
+        // if (username == "admin" && password == "password")
+        // {
+        //     // Successful login
+        //     NavigationManager.NavigateTo("/carshow", true, true);
+        // }
+        // else
+        // {
+        //     // Failed login
+        //     loginError = true;
+        // }
     }
 }

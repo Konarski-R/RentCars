@@ -18,7 +18,7 @@ namespace RentCars.Model
         }
         public void OpenConnection()
         {
-            string databaseFileName = AppContext.BaseDirectory + @"\RentCars.db";
+            string databaseFileName = AppContext.BaseDirectory + @"\CarRent.db";
             connection = new SqliteConnection("Data Source=" + databaseFileName);
             connection.Open();
         }
