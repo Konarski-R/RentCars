@@ -126,7 +126,7 @@
     <input id="PassportIssueCountry" @bind="@PassportIssueCountry" class="form-control" />
 </div>
 
-<button @onclick="RegisterBtn()" class="btn btn-primary" disabled="@(!userIsValid())">Register</button>
+<button @onclick="RegisterBtn" class="btn btn-primary" disabled="@(!userIsValid())">Register</button>
 @code {
     private string Firstname;
     private string Lastname;
