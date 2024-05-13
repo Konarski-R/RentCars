@@ -68,14 +68,13 @@ namespace RentCars.Model
                     Car car = new Car(
                         result.GetInt32(0),
                         result.GetString(1),
-                        result.GetString(2)
+                        result.GetString(2),
+                        result.GetInt32(3),
+                        result.GetInt32(4),
+                        result.GetInt32(5) == 1,
+                        result.GetDouble(6),
+                        result.GetString(7)
                     );
-                    car.Seats = result.GetInt32(3);
-                    car.Doors = result.GetInt32(4);
-                    car.IsAutomatic = result.GetInt32(5) == 1;
-                    car.HorsePwr = result.GetDouble(6);
-                    car.CarPic = result.GetString(7);
-
                     carList.Add(car);
                 }
             }
