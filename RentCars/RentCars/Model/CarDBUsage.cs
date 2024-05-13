@@ -30,25 +30,26 @@ namespace RentCars.Model
             using (var command = connection.CreateCommand())
             {
                 // Create table if not exist    
-                command.CommandText = @"CREATE TABLE IF NOT EXISTS Car(CID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, CarName NVARCHAR(64) NOT NULL, CarBrand NVARCHAR(64) NOT NULL, Seats INTEGER NOT NULL, Doors INTEGER NOT NULL, IsAutomatic INTEGER NOT NULL, HorsePwr REAL NOT NULL)";
+                command.CommandText = @"CREATE TABLE IF NOT EXISTS Car(CID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, CarName NVARCHAR(64) NOT NULL, CarBrand NVARCHAR(64) NOT NULL, Seats INTEGER NOT NULL, Doors INTEGER NOT NULL, IsAutomatic INTEGER NOT NULL, HorsePwr REAL NOT NULL, CarPic NVARCHAR(100) NOT NULL)";
                 command.ExecuteNonQuery();
             }
         }
 
-        public void InsertIntoCarTable(string carName, string carBrand, int seats, int doors, bool isAutomatic, double horsePwr)
+        public void InsertIntoCarTable(string carName, string carBrand, int seats, int doors, bool isAutomatic, double horsePwr, string carpicture)
         {
             OpenConnection();
 
             using (var command = connection.CreateCommand())
             {
                 // Insert a record    
-                command.CommandText = @"INSERT INTO Car(CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr) VALUES(@CarName, @CarBrand, @Seats, @Doors, @IsAutomatic, @HorsePwr) ";
+                command.CommandText = @"INSERT INTO Car(CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic) VALUES(@CarName, @CarBrand, @Seats, @Doors, @IsAutomatic, @HorsePwr, @CarPic) ";
                 command.Parameters.AddWithValue("@CarName", carName);
                 command.Parameters.AddWithValue("@CarBrand", carBrand);
                 command.Parameters.AddWithValue("@Seats", seats);
                 command.Parameters.AddWithValue("@Doors", doors);
                 command.Parameters.AddWithValue("@IsAutomatic", isAutomatic ? 1 : 0);
                 command.Parameters.AddWithValue("@HorsePwr", horsePwr);
+                command.Parameters.AddWithValue("@CarPic", carpicture);
                 command.ExecuteNonQuery();
             }
         }
@@ -60,7 +61,7 @@ namespace RentCars.Model
 
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = "SELECT CID, CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr FROM Car";
+                command.CommandText = "SELECT CID, CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic FROM Car";
                 var result = command.ExecuteReader();
                 while (result.Read())
                 {
@@ -73,6 +74,7 @@ namespace RentCars.Model
                     car.Doors = result.GetInt32(4);
                     car.IsAutomatic = result.GetInt32(5) == 1;
                     car.HorsePwr = result.GetDouble(6);
+                    car.CarPic = result.GetString(7);
 
                     carList.Add(car);
                 }
