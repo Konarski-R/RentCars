@@ -5,11 +5,14 @@
 <style>
 
 
+
 </style>
 
 
 
 <h3>Register</h3>
+
+<button @onclick="BackToHome">Back to Home</button>
 
 <div class="form-group">
     <label for="Firstname">First Name:</label>
@@ -27,12 +30,12 @@
 </div>
 
 <div class="form-group">
-    <label for="Password">Password:</label>
+    <label for="Password">Password (at least 8 characters):</label>
     <input id="Password" type="password" @bind="@Password" class="form-control" />
 </div>
 
 <div class="form-group">
-    <label for="Phone">Phone:</label>
+    <label for="Phone">Phone (with prefix):</label>
     <input id="Phone" @bind="@Phone" class="form-control" />
 </div>
 
@@ -57,7 +60,7 @@
 </div>
 
 <div class="form-group">
-    <label for="Birthdate">Birthdate:</label>
+    <label for="Birthdate">Birthdate (MM/DD/YYYY):</label>
     <input id="Birthdate" @bind="@Birthdate" type="date" class="form-control" />
 </div>
 
@@ -77,12 +80,12 @@
 </div>
 
 <div class="form-group">
-    <label for="DLIssueDate">Driver License Issue Date:</label>
+    <label for="DLIssueDate">Driver License Issue Date (MM/DD/YYYY):</label>
     <input id="DLIssueDate" @bind="@DLIssueDate" type="date" class="form-control" />
 </div>
 
 <div class="form-group">
-    <label for="DLExpiryDate">Driver License Expiry Date:</label>
+    <label for="DLExpiryDate">Driver License Expiry Date (MM/DD/YYYY):</label>
     <input id="DLExpiryDate" @bind="@DLExpiryDate" type="date" class="form-control" />
 </div>
 
@@ -107,13 +110,13 @@
 </div>
 
 <div class="form-group">
-    <label for="PassportExpiryDate">Passport Expiry Date:</label>
-    <input id="PassportExpiryDate" @bind="@PassportExpiryDate" type="date" class="form-control" />
+    <label for="PassportIssueDate">Passport Issue Date (MM/DD/YYYY):</label>
+    <input id="PassportIssueDate" @bind="@PassportIssueDate" type="date" class="form-control" />
 </div>
 
 <div class="form-group">
-    <label for="PassportIssueDate">Passport Issue Date:</label>
-    <input id="PassportIssueDate" @bind="@PassportIssueDate" type="date" class="form-control" />
+    <label for="PassportExpiryDate">Passport Expiry Date (MM/DD/YYYY):</label>
+    <input id="PassportExpiryDate" @bind="@PassportExpiryDate" type="date" class="form-control" />
 </div>
 
 <div class="form-group">
@@ -127,6 +130,8 @@
 </div>
 
 <button @onclick="RegisterBtn" class="btn btn-primary" disabled="@(!userIsValid())">Register</button>
+
+
 @code {
     private string Firstname;
     private string Lastname;
@@ -147,10 +152,12 @@
     private string DLIssueCountry;
     private int IDNumber;
     private int PassportNumber;
-    private DateTime PassportExpiryDate;
     private DateTime PassportIssueDate;
+    private DateTime PassportExpiryDate;
     private string PassportIssueCity;
     private string PassportIssueCountry;
+
+    private DateTime currentDate = DateTime.Now;
 
     static UserDBUsage db = new();
 
@@ -165,8 +172,11 @@
         && !string.IsNullOrWhiteSpace(DLIssueCity) && !string.IsNullOrWhiteSpace(DLIssueCountry)
         && IDNumber != 0 && PassportNumber != 0 && PassportExpiryDate != default
         && PassportIssueDate != default && !string.IsNullOrWhiteSpace(PassportIssueCity)
-        && !string.IsNullOrWhiteSpace(PassportIssueCountry))
+        && !string.IsNullOrWhiteSpace(PassportIssueCountry) && Password.Length > 8 
+        && Phone.Contains("+") /*&& Birthdate > currentDate.AddYears(-18)*/)
+        {
             return true;
+        }
         else
             return false;
     }
@@ -179,6 +189,10 @@
             PassportExpiryDate, PassportIssueDate, PassportIssueCity, PassportIssueCountry);
 
         NavigationManager.NavigateTo("/", true, true);
+    }
 
+    public void BackToHome()
+    {
+        NavigationManager.NavigateTo("/", true, true);
     }
 }
