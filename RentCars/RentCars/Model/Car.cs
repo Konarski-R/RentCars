@@ -22,5 +22,6 @@
             HorsePwr = horsepwr;
             CarPic = carPic;
         }
+        public Car() { }
     }
 }

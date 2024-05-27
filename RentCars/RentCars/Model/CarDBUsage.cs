@@ -54,6 +54,35 @@ namespace RentCars.Model
             }
         }
 
+        public Car SelectCarFromId(int id)
+        {
+            OpenConnection();
+
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = $"SELECT CID, CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic FROM Car WHERE CID = {id};";
+
+                var result = command.ExecuteReader();
+                
+                while(result.Read())
+                {
+                    Car car = new Car(
+                        result.GetInt32(0),
+                        result.GetString(1),
+                        result.GetString(2),
+                        result.GetInt32(3),
+                        result.GetInt32(4),
+                        result.GetInt32(5) == 1,
+                        result.GetDouble(6),
+                        result.GetString(7)
+                    );
+                    return car;
+                }
+            
+            }
+            return null;
+        }
+
         public List<Car> SelectFromCarTable()
         {
             OpenConnection();

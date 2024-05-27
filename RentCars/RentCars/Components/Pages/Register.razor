@@ -129,8 +129,11 @@
     <input id="PassportIssueCountry" @bind="@PassportIssueCountry" class="form-control" />
 </div>
 
-<button @onclick="RegisterBtn" class="btn btn-primary" disabled="@(!userIsValid())">Register</button>
+<button @onclick="RegisterBtn" class="btn btn-primary">Register</button>
 
+@if(notworked){
+    <a>Not worked</a>
+}
 
 @code {
     private string Firstname;
@@ -161,19 +164,35 @@
 
     static UserDBUsage db = new();
 
+    public bool notworked = false;
+
     private bool userIsValid()
     {
-        if (!string.IsNullOrWhiteSpace(Firstname) && !string.IsNullOrWhiteSpace(Lastname)
-        && !string.IsNullOrWhiteSpace(Email) && !string.IsNullOrWhiteSpace(Password)
-        && !string.IsNullOrWhiteSpace(Phone) && !string.IsNullOrWhiteSpace(Address)
-        && ZIP != 0 && !string.IsNullOrWhiteSpace(City) && !string.IsNullOrWhiteSpace(Country)
-        && Birthdate != default && !string.IsNullOrWhiteSpace(BirthCity) && !string.IsNullOrWhiteSpace(BirthCountry)
-        && DLNumber != 0 && DLIssueDate != default && DLExpiryDate != default
-        && !string.IsNullOrWhiteSpace(DLIssueCity) && !string.IsNullOrWhiteSpace(DLIssueCountry)
-        && IDNumber != 0 && PassportNumber != 0 && PassportExpiryDate != default
-        && PassportIssueDate != default && !string.IsNullOrWhiteSpace(PassportIssueCity)
-        && !string.IsNullOrWhiteSpace(PassportIssueCountry) && Password.Length > 8 
-        && Phone.Contains("+") /*&& Birthdate > currentDate.AddYears(-18)*/)
+        if (!string.IsNullOrWhiteSpace(Firstname) 
+        && !string.IsNullOrWhiteSpace(Lastname)
+        && !string.IsNullOrWhiteSpace(Email) 
+        && !string.IsNullOrWhiteSpace(Password)
+        && !string.IsNullOrWhiteSpace(Phone) 
+        && !string.IsNullOrWhiteSpace(Address)
+        && ZIP != 0 
+        && !string.IsNullOrWhiteSpace(City) 
+        && !string.IsNullOrWhiteSpace(Country)
+        && Birthdate != default 
+        && !string.IsNullOrWhiteSpace(BirthCity) 
+        && !string.IsNullOrWhiteSpace(BirthCountry)
+        && DLNumber != 0 
+        && DLIssueDate != default 
+        && DLExpiryDate != default
+        && !string.IsNullOrWhiteSpace(DLIssueCity) 
+        && !string.IsNullOrWhiteSpace(DLIssueCountry)
+        && IDNumber != 0 
+        && PassportNumber != 0 
+        && PassportExpiryDate != default
+        && PassportIssueDate != default 
+        && !string.IsNullOrWhiteSpace(PassportIssueCity)
+        && !string.IsNullOrWhiteSpace(PassportIssueCountry) 
+        && Password.Length >= 8 
+        && Phone.Contains("+"))
         {
             return true;
         }
@@ -183,12 +202,20 @@
 
     public void RegisterBtn()
     {
-        db.InsertIntoUserTable(Firstname, Lastname, Email, Password, Phone, Address, ZIP,
+        if (userIsValid())
+        {
+            db.InsertIntoUserTable(Firstname, Lastname, Email, Password, Phone, Address, ZIP,
             City, Country, Birthdate, BirthCity, BirthCountry, DLNumber, DLIssueDate,
             DLExpiryDate, DLIssueCity, DLIssueCountry, IDNumber, PassportNumber,
             PassportExpiryDate, PassportIssueDate, PassportIssueCity, PassportIssueCountry);
 
-        NavigationManager.NavigateTo("/", true, true);
+            NavigationManager.NavigateTo("/", true, true);
+        }
+        else
+        {
+            notworked = true;
+        }
+
     }
 
     public void BackToHome()

@@ -1,0 +1,45 @@
+﻿@page "/cardetails/{CarId}"
+@rendermode InteractiveServer
+@using RentCars.Model
+
+<h1>Car Details</h1>
+
+@if (car != null)
+{
+    <div>
+        <h2>@car.CarBrand @car.CarName</h2>
+        <p>@car.CarPic</p>
+        <p>Details</p>
+        <p>Seats: @car.Seats</p>
+        <p>Doors: @car.Doors</p>
+        @if (car.IsAutomatic)
+        {
+            <p>Automatic / Manual: Automatic</p>
+        }
+        else
+        {
+            <p>Automatic / Manual: Manual</p>
+        }
+    </div>
+}
+else
+{
+    <p>Car not found.</p>
+}
+
+@code {
+    [Parameter]
+    public string CarId { get; set; }
+
+    static CarDBUsage db = new();
+
+    private Car car;
+
+    protected override void OnInitialized()
+    {
+        if (int.TryParse(CarId, out int carId))
+        {
+            car = db.SelectCarFromId(carId);
+        }
+    }
+}
