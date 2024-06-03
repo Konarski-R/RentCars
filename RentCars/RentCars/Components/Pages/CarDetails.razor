@@ -1,6 +1,9 @@
 ﻿@page "/cardetails/{CarId}"
 @rendermode InteractiveServer
 @using RentCars.Model
+@inject DataService SharedUser
+@inject NavigationManager NavigationManager
+
 
 <h1>Car Details</h1>
 
@@ -26,6 +29,8 @@ else
 {
     <p>Car not found.</p>
 }
+<button @onclick="Return">Back to cars</button>
+<button @onclick="RentCar">Rent</button>
 
 @code {
     [Parameter]
@@ -41,5 +46,14 @@ else
         {
             car = db.SelectCarFromId(carId);
         }
+    }
+
+    public void RentCar()
+    {
+        
+    }
+    public void Return()
+    {
+        NavigationManager.NavigateTo("/carshow");
     }
 }

@@ -30,19 +30,19 @@ namespace RentCars.Model
             using (var command = connection.CreateCommand())
             {
                 // Create table if not exist    
-                command.CommandText = @"CREATE TABLE IF NOT EXISTS Car(CID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, CarName NVARCHAR(64) NOT NULL, CarBrand NVARCHAR(64) NOT NULL, Seats INTEGER NOT NULL, Doors INTEGER NOT NULL, IsAutomatic INTEGER NOT NULL, HorsePwr REAL NOT NULL, CarPic NVARCHAR(100) NOT NULL)";
+                command.CommandText = @"CREATE TABLE IF NOT EXISTS Car(CID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, CarName NVARCHAR(64) NOT NULL, CarBrand NVARCHAR(64) NOT NULL, Seats INTEGER NOT NULL, Doors INTEGER NOT NULL, IsAutomatic INTEGER NOT NULL, HorsePwr REAL NOT NULL, CarPic NVARCHAR(100) NOT NULL, CarPrice REAL NOT NULL)";
                 command.ExecuteNonQuery();
             }
         }
 
-        public void InsertIntoCarTable(string carName, string carBrand, int seats, int doors, bool isAutomatic, double horsePwr, string carpicture)
+        public void InsertIntoCarTable(string carName, string carBrand, int seats, int doors, bool isAutomatic, double horsePwr, string carpicture, double carprice)
         {
             OpenConnection();
 
             using (var command = connection.CreateCommand())
             {
                 // Insert a record    
-                command.CommandText = @"INSERT INTO Car(CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic) VALUES(@CarName, @CarBrand, @Seats, @Doors, @IsAutomatic, @HorsePwr, @CarPic) ";
+                command.CommandText = @"INSERT INTO Car(CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic, CarPrice) VALUES(@CarName, @CarBrand, @Seats, @Doors, @IsAutomatic, @HorsePwr, @CarPic, @CarPrice) ";
                 command.Parameters.AddWithValue("@CarName", carName);
                 command.Parameters.AddWithValue("@CarBrand", carBrand);
                 command.Parameters.AddWithValue("@Seats", seats);
@@ -50,6 +50,7 @@ namespace RentCars.Model
                 command.Parameters.AddWithValue("@IsAutomatic", isAutomatic ? 1 : 0);
                 command.Parameters.AddWithValue("@HorsePwr", horsePwr);
                 command.Parameters.AddWithValue("@CarPic", carpicture);
+                command.Parameters.AddWithValue("@CarPrice", carprice);
                 command.ExecuteNonQuery();
             }
         }
@@ -60,7 +61,7 @@ namespace RentCars.Model
 
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = $"SELECT CID, CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic FROM Car WHERE CID = {id};";
+                command.CommandText = $"SELECT CID, CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic, CarPrice FROM Car WHERE CID = {id};";
 
                 var result = command.ExecuteReader();
                 
@@ -74,7 +75,8 @@ namespace RentCars.Model
                         result.GetInt32(4),
                         result.GetInt32(5) == 1,
                         result.GetDouble(6),
-                        result.GetString(7)
+                        result.GetString(7),
+                        result.GetDouble(8)
                     );
                     return car;
                 }
@@ -90,7 +92,7 @@ namespace RentCars.Model
 
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = "SELECT CID, CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic FROM Car";
+                command.CommandText = "SELECT CID, CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic, CarPrice FROM Car";
                 var result = command.ExecuteReader();
                 while (result.Read())
                 {
@@ -102,7 +104,8 @@ namespace RentCars.Model
                         result.GetInt32(4),
                         result.GetInt32(5) == 1,
                         result.GetDouble(6),
-                        result.GetString(7)
+                        result.GetString(7),
+                        result.GetDouble(8)
                     );
                     carList.Add(car);
                 }

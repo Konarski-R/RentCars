@@ -10,8 +10,9 @@
         public bool IsAutomatic { get; set; }
         public double HorsePwr { get; set; }
         public string CarPic { get; set; }
+        public double CarPrice { get; set; }
 
-        public Car(int id, string name, string brand, int seats, int doors, bool isautomatic, double horsepwr, string carPic)
+        public Car(int id, string name, string brand, int seats, int doors, bool isautomatic, double horsepwr, string carPic, double carPrice)
         {
             CID = id;
             CarName = name;
@@ -21,6 +22,7 @@
             IsAutomatic = isautomatic;
             HorsePwr = horsepwr;
             CarPic = carPic;
+            CarPrice = carPrice;
         }
         public Car() { }
     }
