@@ -1,0 +1,71 @@
+﻿@page "/carpurchase/{CarId}"
+@inject NavigationManager NavigationManager
+@inject DataService SharedUser
+@rendermode InteractiveServer
+
+ <div class="main-container">
+    <h1>Total Price: @TotalPrice  CHF</h1>
+
+    <input @bind="NumOfDays" type="number"/>
+
+
+        @*
+      <div class="plans">
+        <div class="plan-card">
+            <div>Basic - 0 CHF</div>
+            <button @onclick="() => ChoosePlan(0)">@(basicChosen ? "Chosen" : "Choose")</button>
+        </div>
+        <div class="plan-card">
+            <div>Premium - 50 CHF</div>
+            <button @onclick="() => ChoosePlan(50)">@(premiumChosen ? "Chosen" : "Choose")</button>
+        </div>
+    </div>
+
+    <div class="protections">
+        <h3>Protections</h3>
+        @foreach (var protection in protections)
+        {
+            <div class="extra-card">
+                <div>@protection.Name - @protection.Price CHF</div>
+                <button @onclick="() => ToggleExtra(protection)">@(protection.IsAdded ? "Added" : "Add")</button>
+            </div>
+        }
+    </div>
+
+    <div class="extras">
+        <h3>Extras</h3>
+        @foreach (var extra in extras)
+        {
+            <div class="extra-card">
+                <div>@extra.Name - @extra.Price CHF</div>
+                <button @onclick="() => ToggleExtra(extra)">@(extra.IsAdded ? "Added" : "Add")</button>
+            </div>
+        }
+    </div>
+    *@
+  </div>
+
+    <button class="checkout">Check out</button>
+
+
+
+
+@code {
+    [Parameter]
+    public string CarId { get; set; }
+
+    static CarDBUsage db = new();
+
+    private Car car;
+
+    public double TotalPrice = 0.0;
+    public int NumOfDays = 0;
+
+    protected override void OnInitialized()
+    {
+        if (int.TryParse(CarId, out int carId))
+        {
+            car = db.SelectCarFromId(carId);
+        }
+    }
+}

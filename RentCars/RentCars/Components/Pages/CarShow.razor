@@ -21,6 +21,9 @@
     right: 0px;
   }
 </style>
+
+<p>Welcome @user.Lastname, Choose the car you want to rent!</p>
+
 <div style="width: 100%">
 @foreach(var car in carlist)
 {
@@ -38,6 +41,7 @@
         {
            <p>Automatic / Manual: Manual</p>
         }
+        <p>Price: @car.CarPrice</p>
         <button @onclick="(e => carchosen(car.CID))">Rent</button>
     </div>
 }

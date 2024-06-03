@@ -23,7 +23,10 @@
         {
             <p>Automatic / Manual: Manual</p>
         }
+        <p>Price per day*: @car.CarPrice</p>
     </div>
+
+    <p>* price may vary for the amount of days</p>
 }
 else
 {
@@ -50,7 +53,7 @@ else
 
     public void RentCar()
     {
-        
+        NavigationManager.NavigateTo($"/carpurchase/{CarId}");
     }
     public void Return()
     {
