@@ -1,6 +1,7 @@
 ﻿@page "/login"
 @using RentCars.Model
 @inject NavigationManager NavigationManager
+@inject DataService SharedUser
 @rendermode InteractiveServer
 
 <h3>Login</h3>
@@ -43,6 +44,7 @@
         {
             if(user.Password == password)
             {
+                SharedUser.SharedUserID = user.UID;
                 NavigationManager.NavigateTo("/carshow", true, true);
             }
             else
@@ -57,6 +59,7 @@
     }
     public void MoveToRegister()
     {
+        
         NavigationManager.NavigateTo("/register");
 
     }

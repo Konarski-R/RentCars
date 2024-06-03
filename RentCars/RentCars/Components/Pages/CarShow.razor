@@ -1,5 +1,6 @@
 ﻿@page "/carshow"
 @inject NavigationManager NavigationManager
+@inject DataService SharedUser
 @rendermode InteractiveServer
 @using RentCars.Model
 
@@ -20,7 +21,6 @@
     right: 0px;
   }
 </style>
-
 <div style="width: 100%">
 @foreach(var car in carlist)
 {
@@ -45,11 +45,19 @@
 
 
 @code{
-    static CarDBUsage database = new();
+    static CarDBUsage cardatabase = new();
+    static UserDBUsage userdatabase = new();
+    int userid;
+    static User user;
 
-    public List<Car> carlist = database.SelectFromCarTable();
+    public List<Car> carlist = cardatabase.SelectFromCarTable();
     public void carchosen(int id)
     {
         NavigationManager.NavigateTo($"/cardetails/{id}");
+    }
+
+    protected override void OnInitialized()
+    {
+        user = userdatabase.UserGetUserdById(SharedUser.SharedUserID);
     }
 }

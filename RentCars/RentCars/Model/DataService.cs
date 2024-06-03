@@ -2,6 +2,6 @@
 {
     public class DataService
     {
-        public User SharedUser { get; set; }
+        public int SharedUserID { get; set; }
     }
 }

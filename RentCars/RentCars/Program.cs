@@ -12,6 +12,7 @@ namespace RentCars
             // Add services to the container.
             builder.Services.AddRazorComponents()
 				.AddInteractiveServerComponents();
+			builder.Services.AddSingleton<DataService>();
 
 			var app = builder.Build();
 

@@ -1,7 +1,19 @@
 ﻿@page "/admin"
 @rendermode InteractiveServer
 <h3>Admin</h3>
-
+@if (!IsAdmin)
+{
+ <p>Enter Admin Password to add cars into the databse: </p>
+ <input type="password" placeholder="Admin password" @bind="input_password"/>
+ <button @onclick="CheckPassword">submit</button>
+ @if(PasswordError)
+ {
+        <div>Password wrong or empty</div>
+ }
+}
+else
+{
+    
 <div class="form-group">
     <label for="CarName">Car Model:</label>
     <input id="CarName" @bind="@CarName" class="form-control" />
@@ -38,6 +50,7 @@
 </div>
 
 <button @onclick="InsertCarBtn" class="btn btn-primary" disabled="@(!CarIsValid())">Register</button>
+}
 @code {
     private string CarName;
     private string CarBrand;
@@ -46,6 +59,10 @@
     private bool IsAutomatic;
     private double HorsePwr;
     private string CarPic;
+
+    private bool IsAdmin = false;
+    private string input_password = "";
+    private bool PasswordError = false;
 
     static CarDBUsage db = new();
 
@@ -62,4 +79,18 @@
     {
         db.InsertIntoCarTable(CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic);
     }
+
+    public void CheckPassword()
+    {
+        if (input_password == "" || input_password != "B0bR0ss")
+        {
+            PasswordError = true;
+        }
+        else if (input_password == "B0bR0ss")
+        {
+            IsAdmin = true;
+            PasswordError = false;
+        }
+    }
 }
+

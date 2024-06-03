@@ -103,6 +103,7 @@ namespace RentCars.Model
 
         public User UserGetUserdById(int userId)
         {
+            OpenConnection();
             try
             {
                 var command = connection.CreateCommand();
