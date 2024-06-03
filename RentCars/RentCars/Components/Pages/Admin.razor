@@ -1,0 +1,65 @@
+﻿@page "/admin"
+@rendermode InteractiveServer
+<h3>Admin</h3>
+
+<div class="form-group">
+    <label for="CarName">Car Model:</label>
+    <input id="CarName" @bind="@CarName" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="CarBrand">Car Brand:</label>
+    <input id="CarBrand" @bind="@CarBrand" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="Seats">Seats:</label>
+    <input id="Seats" @bind="@Seats" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="Doors">Doors:</label>
+    <input id="Doors" @bind="@Doors" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="IsAutomatic">Is it Automatic:</label>
+    <input id="IsAutomatic" @bind="@IsAutomatic" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="HorsePwr">Horse Power:</label>
+    <input id="HorsePwr" @bind="@HorsePwr" class="form-control" />
+</div>
+
+<div class="form-group">
+    <label for="CarPic">Car Pic:</label>
+    <input id="CarPic" @bind="@CarPic" class="form-control" />
+</div>
+
+<button @onclick="InsertCarBtn" class="btn btn-primary" disabled="@(!CarIsValid())">Register</button>
+@code {
+    private string CarName;
+    private string CarBrand;
+    private int Seats;
+    private int Doors;
+    private bool IsAutomatic;
+    private double HorsePwr;
+    private string CarPic;
+
+    static CarDBUsage db = new();
+
+    private bool CarIsValid()
+    {
+        if (!string.IsNullOrWhiteSpace(CarName) && !string.IsNullOrWhiteSpace(CarBrand)
+            && Seats != 0 && Doors != 0 && HorsePwr != 0 && !string.IsNullOrWhiteSpace(CarPic))
+            return true;
+        else
+            return false;
+    }
+
+    public void InsertCarBtn()
+    {
+        db.InsertIntoCarTable(CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic);
+    }
+}
