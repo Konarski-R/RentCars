@@ -36,7 +36,7 @@ else
 
 <div class="form-group">
     <label for="IsAutomatic">Is it Automatic:</label>
-    <InputCheckbox id="IsAutomatic" @bind-value="@IsAutomatic" @onchange="OnCheckboxChanged" class="form-control"/>
+    <InputCheckbox id="IsAutomatic" @bind-Value="@IsAutomatic" @onchange="OnCheckboxChanged" />
     <label>@(IsAutomatic ? "True" : "False")</label>
 </div>
 
@@ -50,10 +50,10 @@ else
     <input id="CarPic" @bind="@CarPic" class="form-control" />
 </div>
 
-    <div class="form-group">
-        <label for="CarPic">Car Pic:</label>
-        <input id="CarPic" @bind="@CarPrice" class="form-control" />
-    </div>
+<div class="form-group">
+    <label for="CarPrice">Car Price:</label>
+    <input id="CarPrice" @bind="@CarPrice" class="form-control" />
+</div>
 
 <button @onclick="InsertCarBtn" class="btn btn-primary" disabled="@(!CarIsValid())">Register</button>
 }
