@@ -36,7 +36,8 @@ else
 
 <div class="form-group">
     <label for="IsAutomatic">Is it Automatic:</label>
-    <input id="IsAutomatic" @bind="@IsAutomatic" class="form-control" type="checkbox"/>
+    <InputCheckbox id="IsAutomatic" @bind-Value="@IsAutomatic" @onchange="OnCheckboxChanged" />
+    <label>@(IsAutomatic ? "True" : "False")</label>
 </div>
 
 <div class="form-group">
@@ -49,10 +50,10 @@ else
     <input id="CarPic" @bind="@CarPic" class="form-control" />
 </div>
 
-    <div class="form-group">
-        <label for="CarPic">Car Pic:</label>
-        <input id="CarPic" @bind="@CarPrice" class="form-control" />
-    </div>
+<div class="form-group">
+    <label for="CarPrice">Car Price:</label>
+    <input id="CarPrice" @bind="@CarPrice" class="form-control" />
+</div>
 
 <button @onclick="InsertCarBtn" class="btn btn-primary" disabled="@(!CarIsValid())">Register</button>
 }
@@ -61,7 +62,7 @@ else
     private string CarBrand;
     private int Seats;
     private int Doors;
-    private bool IsAutomatic;
+    private bool IsAutomatic = false;
     private double HorsePwr;
     private string CarPic;
     private double CarPrice;
@@ -69,6 +70,11 @@ else
     private bool IsAdmin = false;
     private string input_password = "";
     private bool PasswordError = false;
+
+    private void OnCheckboxChanged(ChangeEventArgs e)
+    {
+        Console.WriteLine($"Checkbox changed: {IsAutomatic}");
+    }
 
     static CarDBUsage db = new();
 
