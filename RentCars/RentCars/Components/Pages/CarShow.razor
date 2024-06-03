@@ -5,6 +5,7 @@
 @using RentCars.Model
 
 <PageTitle>Cars</PageTitle>
+
 <style>
   .car-div {
         border: 2px solid black;
@@ -41,7 +42,7 @@
         {
            <p>Automatic / Manual: Manual</p>
         }
-        <p>Price: @car.CarPrice</p>
+        <p>Price per day (may vary): @car.CarPrice</p>
         <button @onclick="(e => carchosen(car.CID))">Rent</button>
     </div>
 }

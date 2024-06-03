@@ -3,12 +3,25 @@
 @inject DataService SharedUser
 @rendermode InteractiveServer
 
+<PageTitle>Additional Packs</PageTitle>
+
  <div class="main-container">
-    <h1>Total Price: @TotalPrice  CHF</h1>
+    <h1>Total Price: @TotalPrice.ToString("F2")  CHF</h1>
 
-    <input @bind="NumOfDays" type="number"/>
+    @if (!DaysInputted)
+    {
+        <h2>How many days do you need this car for?</h2>
+        <input type="number" value="@NumOfDays" @oninput="DaysAmountChanged" />
 
+        <button @onclick="ConfirmDays">Click here to confirm your input.</button>
 
+        @if (DaysError)
+        {
+            <p>Please input a positive number of days.</p>
+        }
+    }
+    else
+    {
         @*
       <div class="plans">
         <div class="plan-card">
@@ -43,9 +56,14 @@
         }
     </div>
     *@
-  </div>
+        <button class="checkout">Check out</button>
+    }
+</div>
 
-    <button class="checkout">Check out</button>
+    
+    
+
+
 
 
 
@@ -61,11 +79,44 @@
     public double TotalPrice = 0.0;
     public int NumOfDays = 0;
 
+    public bool DaysInputted = false;
+    public bool DaysError = false;
+
     protected override void OnInitialized()
     {
         if (int.TryParse(CarId, out int carId))
         {
             car = db.SelectCarFromId(carId);
+            TotalPrice = car.CarPrice;
+        }
+    }
+
+    public void DaysAmountChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out int days))
+        {
+            NumOfDays = days;
+
+            if(days > 0)
+            {
+                TotalPrice = Math.Ceiling((car.CarPrice * days) * 20) / 20;
+            }
+            else
+            {
+                TotalPrice = car.CarPrice;
+            }
+        }
+    }
+
+    public void ConfirmDays()
+    {
+        if(NumOfDays > 0)
+        {
+            DaysInputted = true;
+        }
+        else
+        {
+            DaysError = true;
         }
     }
 }
