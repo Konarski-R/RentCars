@@ -13,6 +13,12 @@
         margin-right: 10px;
         margin-bottom: 10px;
   }
+
+  .accountname{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
 </style>
 
 <div style="width: 100%">
@@ -24,15 +30,15 @@
         <p>Details</p>
         <p>Seats: @car.Seats</p>
         <p>Doors: @car.Doors</p>
-            @if (car.IsAutomatic)
-            {
-                <p>Automatic / Manual: Automatic</p>
-            }
-            else
-            {
-                <p>Automatic / Manual: Manual</p>
-            }
-            <button @onclick="carchosen">Rent</button>
+        @if (car.IsAutomatic)
+        {
+           <p>Automatic / Manual: Automatic</p>
+        }
+        else
+        {
+           <p>Automatic / Manual: Manual</p>
+        }
+        <button @onclick="(e => carchosen(car.CID))">Rent</button>
     </div>
 }
 </div>
@@ -42,7 +48,8 @@
     static CarDBUsage database = new();
 
     public List<Car> carlist = database.SelectFromCarTable();
-    public void carchosen(){
-
+    public void carchosen(int id)
+    {
+        NavigationManager.NavigateTo($"/cardetails/{id}");
     }
 }

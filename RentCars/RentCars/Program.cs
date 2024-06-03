@@ -1,4 +1,5 @@
 using RentCars.Components;
+using RentCars.Model;
 
 namespace RentCars
 {
@@ -8,8 +9,8 @@ namespace RentCars
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			// Add services to the container.
-			builder.Services.AddRazorComponents()
+            // Add services to the container.
+            builder.Services.AddRazorComponents()
 				.AddInteractiveServerComponents();
 
 			var app = builder.Build();
@@ -30,7 +31,9 @@ namespace RentCars
 			app.MapRazorComponents<App>()
 				.AddInteractiveServerRenderMode();
 
-			app.Run();
+
+
+            app.Run();
 		}
 	}
 }

@@ -5,49 +5,59 @@
 
 <h3>Login</h3>
 
-@if (loginError)
-{
-    <p style="color: red;">Invalid username or password.</p>
-}
 
-<form>
-    <label for="username">Username:</label>
+<div>
+    <label >Username:</label>
     <input type="text" id="username" @bind="username" />
 
-    <label for="password">Password:</label>
+    <label >Password:</label>
     <input type="password" id="password" @bind="password" />
 
-    <button type="submit" @onclick="LogIn">Login</button>
-</form>
+    <button @onclick="LogIn">Login</button>
+
+    @if (!samepw)
+    {
+        <div>The password is wrong.</div>
+    }
+    @if (loginError)
+    {
+        <p style="color: red;">Invalid username or password.</p>
+    }
+</div>
+
+<button @onclick="MoveToRegister">Register</button>
 
 @code {
     private string username;
     private string password;
     private bool loginError;
-    static UserDBUsage db;
-
+    static UserDBUsage db = new();
+    private bool samepw = true;
 
 
     private void LogIn()
     {
-        UserDBUsage dBUser = new();
-        User user = dBUser.SelectFromUserTable(username);
+        User user = db.SelectFromUserTable(username);
 
         if (user != null)
         {
-            NavigationManager.NavigateTo("/carshow", true, true);
+            if(user.Password == password)
+            {
+                NavigationManager.NavigateTo("/carshow", true, true);
+            }
+            else
+            {
+                samepw = false;
+            }
         }
+        else
+        {
+            loginError = true;
+        }
+    }
+    public void MoveToRegister()
+    {
+        NavigationManager.NavigateTo("/register");
 
-        // // Your authentication logic goes here
-        // if (username == "admin" && password == "password")
-        // {
-        //     // Successful login
-        //     NavigationManager.NavigateTo("/carshow", true, true);
-        // }
-        // else
-        // {
-        //     // Failed login
-        //     loginError = true;
-        // }
     }
 }
