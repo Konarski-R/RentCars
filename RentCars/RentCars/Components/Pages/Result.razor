@@ -1,0 +1,21 @@
+﻿@page "/result"
+@inject NavigationManager NavigationManager
+@inject DataService DataService
+@rendermode InteractiveServer
+
+<PageTitle>Rent Success</PageTitle>
+
+
+
+<button @onclick="ReturnToHome">Back To Home</button>
+@code {
+
+
+
+
+	public void ReturnToHome()
+	{
+		DataService.ClearRentData();
+		NavigationManager.NavigateTo("/carshow");
+	}
+}

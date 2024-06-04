@@ -1,4 +1,4 @@
-﻿@page "/carshow"
+﻿d@page "/carshow"
 @inject NavigationManager NavigationManager
 @inject DataService DataService
 @rendermode InteractiveServer
@@ -21,8 +21,14 @@
     right: 0px;
   }
 </style>
+@if (DataService.SharedUserID == 0)
+{
+    <p>You're not logged in</p>
+}
+else
+{
 
-<p>Welcome @user.Lastname, Choose the car you want to rent!</p>
+<p>Welcome @user.Lastname, Choose the car you want to rent! <button @onclick="LogOut">Log Out</button></p>
 
 <div style="width: 100%">
 @foreach(var car in carlist)
@@ -46,7 +52,7 @@
     </div>
 }
 </div>
-
+}
 
 @code{
     static CarDBUsage cardatabase = new();
@@ -63,5 +69,11 @@
     protected override void OnInitialized()
     {
         user = userdatabase.UserGetUserdById(DataService.SharedUserID);
+    }
+
+    public void LogOut()
+    {
+        DataService.SharedUserID = 0;
+        NavigationManager.NavigateTo("/");
     }
 }

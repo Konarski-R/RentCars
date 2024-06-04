@@ -46,6 +46,10 @@
                 }
 
         </div>
+            @if (PlanNotChosen)
+            {
+                <div>Please choose your plan</div>
+            }
     </div>
 
     <div class="additons">
@@ -69,11 +73,11 @@
     </div>
  
     
-        <button class="checkout" @onclick="FinalCheckout">Check out</button>
+    <button class="checkout" @onclick="FinalCheckout">Check out</button>
     }
-</div>
 
-<p>@DataService.Plan</p>
+    <button @onclick="BackToCarShow" >Return To all cars</button>
+</div>
 
 @code {
     [Parameter]
@@ -89,9 +93,10 @@
     public bool DaysInputted = false;
     public bool DaysError = false;
 
-    public string plan = "";
     public bool BasicSelected = false;
     public bool PremiumSelected = false;
+    public bool PlanNotChosen = false;
+
 
     // TODO: Add all tzhe additional packages
     List<Addition> AllAdditions = new List<Addition>{
@@ -143,6 +148,7 @@
 
     public void AddBasic()
     {
+        PlanNotChosen = false;
         if (PremiumSelected)
             TotalPrice -= 50;
         PremiumSelected = false;
@@ -152,6 +158,7 @@
 
     public void AddPremium()
     {
+        PlanNotChosen = false;
         BasicSelected = false;
         PremiumSelected = true;
         TotalPrice += 50;
@@ -174,6 +181,20 @@
 
     public void FinalCheckout()
     {
-        NavigationManager.NavigateTo($"/checkout/{CarId}");
+        if (DataService.Plan is null)
+        {
+            PlanNotChosen = true;
+        }
+        else
+        {
+            DataService.Days = NumOfDays;
+            NavigationManager.NavigateTo($"/checkout/{CarId}");
+        }
+    }
+
+    public void BackToCarShow()
+    {
+        DataService.ClearRentData();
+        NavigationManager.NavigateTo("/carshow");
     }
 }
