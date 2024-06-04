@@ -56,6 +56,17 @@ else
 </div>
 
 <button @onclick="InsertCarBtn" class="btn btn-primary" disabled="@(!CarIsValid())">Register</button>
+
+    @foreach(Car c in carlist)
+    {
+      <div>
+        <a>@c.CarBrand @c.CarName</a>
+        <button @onclick="(e => DeleteCar(c.CID))">Delete</button>
+      </div>
+    }
+
+
+
 }
 @code {
     private string CarName;
@@ -77,6 +88,7 @@ else
     }
 
     static CarDBUsage db = new();
+    static List<Car> carlist = new List<Car>();
 
     private bool CarIsValid()
     {
@@ -90,6 +102,8 @@ else
     public void InsertCarBtn()
     {
         db.InsertIntoCarTable(CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic, CarPrice);
+        carlist = db.SelectFromCarTable();
+
     }
 
     public void CheckPassword()
@@ -103,6 +117,18 @@ else
             IsAdmin = true;
             PasswordError = false;
         }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        carlist = db.SelectFromCarTable();
+    }
+
+    public void DeleteCar(int id)
+    {
+        db.DeleteFromCarTable(id);
+        carlist = db.SelectFromCarTable();
     }
 }
 

@@ -1,8 +1,9 @@
 ﻿using Microsoft.Data.Sqlite;
+using RentCars.Model;
 using System;
 using System.Collections.Generic;
 
-namespace RentCars.Model
+namespace RentCars.Services
 {
     public class CarDBUsage
     {
@@ -64,8 +65,8 @@ namespace RentCars.Model
                 command.CommandText = $"SELECT CID, CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic, CarPrice FROM Car WHERE CID = {id};";
 
                 var result = command.ExecuteReader();
-                
-                while(result.Read())
+
+                while (result.Read())
                 {
                     Car car = new Car(
                         result.GetInt32(0),
@@ -80,7 +81,7 @@ namespace RentCars.Model
                     );
                     return car;
                 }
-            
+
             }
             return null;
         }
@@ -92,7 +93,7 @@ namespace RentCars.Model
 
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = "SELECT CID, CarName, CarBrand, Seats, Doors, IsAutomatic, HorsePwr, CarPic, CarPrice FROM Car";
+                command.CommandText = "SELECT * FROM Car";
                 var result = command.ExecuteReader();
                 while (result.Read())
                 {

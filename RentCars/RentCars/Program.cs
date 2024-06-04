@@ -1,9 +1,9 @@
 using RentCars.Components;
-using RentCars.Model;
+using RentCars.Services;
 
 namespace RentCars
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{

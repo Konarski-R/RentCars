@@ -1,8 +1,7 @@
 ﻿@page "/carshow"
 @inject NavigationManager NavigationManager
-@inject DataService SharedUser
+@inject DataService DataService
 @rendermode InteractiveServer
-@using RentCars.Model
 
 <PageTitle>Cars</PageTitle>
 
@@ -63,6 +62,6 @@
 
     protected override void OnInitialized()
     {
-        user = userdatabase.UserGetUserdById(SharedUser.SharedUserID);
+        user = userdatabase.UserGetUserdById(DataService.SharedUserID);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
+using RentCars.Model;
 
-namespace RentCars.Model
+namespace RentCars.Services
 
 {
     public class UserDBUsage

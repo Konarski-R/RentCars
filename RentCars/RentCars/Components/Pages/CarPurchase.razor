@@ -1,6 +1,6 @@
 ﻿@page "/carpurchase/{CarId}"
 @inject NavigationManager NavigationManager
-@inject DataService SharedUser
+@inject DataService DataService
 @rendermode InteractiveServer
 
 <PageTitle>Additional Packs</PageTitle>
@@ -22,51 +22,58 @@
     }
     else
     {
-        @*
-      <div class="plans">
-        <div class="plan-card">
-            <div>Basic - 0 CHF</div>
-            <button @onclick="() => ChoosePlan(0)">@(basicChosen ? "Chosen" : "Choose")</button>
+        <div class="plans">
+            <div class="plan-card">
+                <div>Basic - 0 CHF</div>
+                @if (BasicSelected)
+                {
+                    <button disabled>Selected</button>
+                }
+                else
+                {
+                    <button @onclick="AddBasic">Select</button>
+                }
         </div>
         <div class="plan-card">
             <div>Premium - 50 CHF</div>
-            <button @onclick="() => ChoosePlan(50)">@(premiumChosen ? "Chosen" : "Choose")</button>
+                @if (PremiumSelected)
+                {
+                    <button disabled>Selected</button>
+                }
+                else
+                {
+                    <button @onclick="AddPremium">Select</button>
+                }
+
         </div>
     </div>
 
-    <div class="protections">
-        <h3>Protections</h3>
-        @foreach (var protection in protections)
-        {
-            <div class="extra-card">
-                <div>@protection.Name - @protection.Price CHF</div>
-                <button @onclick="() => ToggleExtra(protection)">@(protection.IsAdded ? "Added" : "Add")</button>
-            </div>
-        }
-    </div>
-
-    <div class="extras">
+    <div class="additons">
         <h3>Extras</h3>
-        @foreach (var extra in extras)
+        @foreach (Addition a in AllAdditions)
         {
             <div class="extra-card">
-                <div>@extra.Name - @extra.Price CHF</div>
-                <button @onclick="() => ToggleExtra(extra)">@(extra.IsAdded ? "Added" : "Add")</button>
+                <p>@a.Name</p>
+                <img src="@a.ImagePath" />
+                <p>@a.Description</p>
+                    @if (a.IsSelected)
+                    {
+                        <button @onclick="(e => RemoveFromExtras(a))">Remove</button>
+                    }
+                    else
+                    {
+                        <button @onclick="(e => AddToExtras(a))">Add</button>
+                    }
             </div>
         }
     </div>
-    *@
-        <button class="checkout">Check out</button>
+ 
+    
+        <button class="checkout" @onclick="FinalCheckout">Check out</button>
     }
 </div>
 
-    
-    
-
-
-
-
-
+<p>@DataService.Plan</p>
 
 @code {
     [Parameter]
@@ -74,13 +81,27 @@
 
     static CarDBUsage db = new();
 
-    private Car car;
+    private Car car = new();
 
     public double TotalPrice = 0.0;
     public int NumOfDays = 0;
 
     public bool DaysInputted = false;
     public bool DaysError = false;
+
+    public string plan = "";
+    public bool BasicSelected = false;
+    public bool PremiumSelected = false;
+
+    // TODO: Add all tzhe additional packages
+    List<Addition> AllAdditions = new List<Addition>{
+        new Addition("Name", "Desc", "link", 250.50),
+        new Addition("", "", "", 0.0),
+        new Addition("", "", "", 0.0),
+        new Addition("", "", "", 0.0),
+        new Addition("", "", "", 0.0),
+        new Addition("", "", "", 0.0),
+    };
 
     protected override void OnInitialized()
     {
@@ -118,5 +139,41 @@
         {
             DaysError = true;
         }
+    }
+
+    public void AddBasic()
+    {
+        if (PremiumSelected)
+            TotalPrice -= 50;
+        PremiumSelected = false;
+        BasicSelected = true;
+        DataService.Plan = "Basic";
+    }
+
+    public void AddPremium()
+    {
+        BasicSelected = false;
+        PremiumSelected = true;
+        TotalPrice += 50;
+        DataService.Plan = "Premium";
+    }
+
+    public void AddToExtras(Addition a)
+    {
+        TotalPrice += a.Price;
+        a.IsSelected = true;
+        DataService.Additions.Add(a);
+    }
+
+    public void RemoveFromExtras(Addition a)
+    {
+        TotalPrice -= a.Price;
+        a.IsSelected = false;
+        DataService.Additions = DataService.Additions.Where(x => x.Name != a.Name).ToList();
+    }
+
+    public void FinalCheckout()
+    {
+        NavigationManager.NavigateTo($"/checkout/{CarId}");
     }
 }
