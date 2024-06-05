@@ -79,13 +79,13 @@ else if (DataService.Plan == "Premium")
 
     public void ButtonPressPhysical()
     {
-        DataService.Paymentmethod = "In Person"; 
-        NavigationManager.NavigateTo("/result");
+        DataService.Paymentmethod = "in person"; 
+        NavigationManager.NavigateTo($"/result/{CarId}");
     }
 
     public void ButtonPressDigital()
     {
-        DataService.Paymentmethod = "Digitally";
-        NavigationManager.NavigateTo("/result");
+        DataService.Paymentmethod = "digitally";
+        NavigationManager.NavigateTo($"/result/{CarId}");
     }
 }

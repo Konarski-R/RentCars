@@ -1,21 +1,90 @@
-﻿@page "/result"
+﻿@page "/result/{CarId}"
 @inject NavigationManager NavigationManager
 @inject DataService DataService
 @rendermode InteractiveServer
 
 <PageTitle>Rent Success</PageTitle>
 
+<h1>Your receipt</h1>
 
+@if (DataService.Days == 1)
+{
+    <p>@car.CarBrand @car.CarName  ---  @car.CarPrice.ToString("F2") CHF * @DataService.Days.ToString() Day = @PriceTimesDays.ToString("F2") CHF</p>
+}
+else
+{
+    <p>@car.CarBrand @car.CarName  ---  @car.CarPrice.ToString("F2") CHF * @DataService.Days.ToString() Days= @PriceTimesDays.ToString("F2") CHF</p>
+}
+@if (DataService.Plan == "Basic")
+{
+    <p>Plan: Basic --- 0.00 CHF</p>
+}
+else if (DataService.Plan == "Premium")
+{
+    <p>Plan: Premium --- 50.00 CHF</p>
+}
 
+@if (additions.Count != 0)
+{
+    @foreach (Addition a in additions)
+    {
+        <p>@a.Name --- @a.Price.ToString("F2") CHF</p>
+    }
+}
+@if(DataService.Days == 1)
+{
+    <p>You rented a @car.CarBrand @car.CarName for @DataService.Days day.</p>
+}
+else
+{
+    <p>You rented a @car.CarBrand @car.CarName for @DataService.Days days.</p>
+}
+<p>You chose to pay: <b>@DataService.Paymentmethod</b>.</p>
 <button @onclick="ReturnToHome">Back To Home</button>
 @code {
+    [Parameter]
+    public string CarId { get; set; }
 
 
+    public Car car;
+    public CarDBUsage carDB = new();
 
+    public List<Addition> additions;
 
-	public void ReturnToHome()
-	{
-		DataService.ClearRentData();
-		NavigationManager.NavigateTo("/carshow");
-	}
+    public User user;
+    public UserDBUsage userDB = new();
+
+    public double PriceTimesDays;
+    public double Total;
+
+    protected override void OnInitialized()
+    {
+        additions = DataService.Additions;
+        user = userDB.UserGetUserdById(DataService.SharedUserID);
+        if (int.TryParse(CarId, out int carId))
+        {
+            car = carDB.SelectCarFromId(carId);
+        }
+        PriceTimesDays = car.CarPrice * DataService.Days;
+        Total += PriceTimesDays;
+        if (DataService.Plan == "Premium")
+        {
+            Total += 50;
+        }
+        foreach (Addition a in additions)
+        {
+            Total += a.Price;
+        }
+    }
+
+    public void ReturnToHome()
+    {
+        DataService.ClearRentData();
+        NavigationManager.NavigateTo("/carshow");
+        if (int.TryParse(CarId, out int carId))
+        {
+            carDB.DeleteFromCarTable(carId);
+        }
+
+    }
 }
