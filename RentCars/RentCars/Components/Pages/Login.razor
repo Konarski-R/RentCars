@@ -6,29 +6,66 @@
 
 <PageTitle>Log In</PageTitle>
 
-<h3>Login</h3>
+<style>
+    .login-container {
+        width: 400px;
+        margin: 0 auto;
+        border: 1px solid #000;
+        padding: 20px;
+        text-align: center;
+    }
 
+        .login-container label {
+            display: block;
+            margin: 10px 0 5px;
+        }
 
-<div>
-    <label >Username:</label>
-    <input type="text" id="username" @bind="username" />
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #000;
+        }
 
-    <label >Password:</label>
+        .login-container button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .login-container .signup-link {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .login-container .error {
+            color: red;
+        }
+</style>
+
+<div class="login-container">
+    <h3>Login</h3>
+
+    <label for="email">Email</label>
+    <input type="text" id="email" @bind="username" />
+
+    <label for="password">Password</label>
     <input type="password" id="password" @bind="password" />
 
     <button @onclick="LogIn">Login</button>
 
     @if (!samepw)
     {
-        <div>The password is wrong.</div>
+        <div class="error">The password is wrong.</div>
     }
     @if (loginError)
     {
-        <p style="color: red;">Invalid username or password.</p>
+        <div class="error">Invalid username or password.</div>
     }
-</div>
 
-<button @onclick="MoveToRegister">Register</button>
+    <a href="javascript:void(0);" @onclick="MoveToRegister" class="signup-link">Click here to sign up</a>
+</div>
 
 @code {
     private string username;
@@ -37,14 +74,13 @@
     static UserDBUsage db = new();
     private bool samepw = true;
 
-
     private void LogIn()
     {
         User user = db.SelectFromUserTable(username);
 
         if (user != null)
         {
-            if(user.Password == password)
+            if (user.Password == password)
             {
                 DataService.SharedUserID = user.UID;
                 NavigationManager.NavigateTo("/carshow");
@@ -61,8 +97,6 @@
     }
     public void MoveToRegister()
     {
-        
         NavigationManager.NavigateTo("/register");
-
     }
 }
