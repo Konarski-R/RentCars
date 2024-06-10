@@ -5,8 +5,86 @@
 
 <PageTitle>Additional Packs</PageTitle>
 
- <div class="main-container">
-    <h1>Total Price: @TotalPrice.ToString("F2")  CHF</h1>
+<style>
+    body {
+        background-image: url('https://www.shutterstock.com/image-photo/blurred-abstract-dealership-store-defocused-600nw-1486381349.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        font-family: Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .main-container {
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        max-width: 800px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .plans, .additions {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .plan-card, .extra-card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin: 10px;
+        padding: 10px;
+        width: 200px;
+        text-align: center;
+    }
+
+        .extra-card img {
+            max-width: 100%;
+            height: auto;
+        }
+
+    button {
+        margin: 10px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    .checkout {
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .price-detail {
+        opacity: 0.5;
+    }
+
+    .page-title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .additions {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+</style>
+
+<div class="main-container">
+    <h1 class="page-title">Total Price: @TotalPrice.ToString("F2") CHF</h1>
 
     @if (!DaysInputted)
     {
@@ -33,9 +111,9 @@
                 {
                     <button @onclick="AddBasic">Select</button>
                 }
-        </div>
-        <div class="plan-card">
-            <div>Premium - 50 CHF</div>
+            </div>
+            <div class="plan-card">
+                <div>Premium - 50 CHF</div>
                 @if (PremiumSelected)
                 {
                     <button disabled>Selected</button>
@@ -44,22 +122,23 @@
                 {
                     <button @onclick="AddPremium">Select</button>
                 }
-
+            </div>
         </div>
-            @if (PlanNotChosen)
-            {
-                <div>Please choose your plan</div>
-            }
-    </div>
 
-    <div class="additons">
-        <h3>Extras</h3>
-        @foreach (Addition a in AllAdditions)
+        @if (PlanNotChosen)
         {
-            <div class="extra-card">
-                <p>@a.Name</p>
-                <img src="@a.ImagePath" />
-                <p>@a.Description</p>
+            <div>Please choose your plan</div>
+        }
+
+        <h3>Extras</h3>
+        <div class="additions">
+            @foreach (Addition a in AllAdditions)
+            {
+                <div class="extra-card">
+                    <p>@a.Name</p>
+                    <img src="@a.ImagePath" alt="@a.Name" />
+                    <p>@a.Description</p>
+                    <p>@a.Price.ToString("F2")</p>
                     @if (a.IsSelected)
                     {
                         <button @onclick="(e => RemoveFromExtras(a))">Remove</button>
@@ -68,15 +147,14 @@
                     {
                         <button @onclick="(e => AddToExtras(a))">Add</button>
                     }
-            </div>
-        }
-    </div>
- 
-    
-    <button class="checkout" @onclick="FinalCheckout">Check out</button>
+                </div>
+            }
+        </div>
+
+        <button class="checkout" @onclick="FinalCheckout">Check out</button>
     }
 
-    <button @onclick="BackToCarShow" >Return To all cars</button>
+    <button @onclick="BackToCarShow">Return To all cars</button>
 </div>
 
 @code {
@@ -97,15 +175,13 @@
     public bool PremiumSelected = false;
     public bool PlanNotChosen = false;
 
-
-    // TODO: Add all tzhe additional packages
     List<Addition> AllAdditions = new List<Addition>{
         new Addition("Name", "Desc", "link", 250.50),
-        new Addition("", "", "", 0.0),
-        new Addition("", "", "", 0.0),
-        new Addition("", "", "", 0.0),
-        new Addition("", "", "", 0.0),
-        new Addition("", "", "", 0.0),
+        new Addition("Extra1", "Extra Description 1", "link1", 30.0),
+        new Addition("Extra2", "Extra Description 2", "link2", 40.0),
+        new Addition("Extra3", "Extra Description 3", "link3", 50.0),
+        new Addition("Extra4", "Extra Description 4", "link4", 60.0),
+        new Addition("Extra5", "Extra Description 5", "link5", 70.0),
     };
 
     protected override void OnInitialized()
@@ -123,9 +199,21 @@
         {
             NumOfDays = days;
 
-            if(days > 0)
+            if (days > 0 && days < 7)
             {
                 TotalPrice = Math.Ceiling((car.CarPrice * days) * 20) / 20;
+            }
+            else if (days >= 7 && days < 30)
+            {
+                TotalPrice = Math.Ceiling((car.CarPrice * days) * 20) / 20;
+                double Percentage = TotalPrice / 100.0 * 2.5;
+                TotalPrice -= Percentage;
+            }
+            else if(days >= 30)
+            {
+                TotalPrice = Math.Ceiling((car.CarPrice * days) * 20) / 20;
+                double Percentage = TotalPrice / 100.0 * 5.0;
+                TotalPrice -= Percentage;
             }
             else
             {
@@ -136,7 +224,7 @@
 
     public void ConfirmDays()
     {
-        if(NumOfDays > 0)
+        if (NumOfDays > 0)
         {
             DaysInputted = true;
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using RentCars.Model;
+using System.Data;
 
 namespace RentCars.Services
 
@@ -7,6 +8,13 @@ namespace RentCars.Services
     public class UserDBUsage
     {
         public SqliteConnection connection;
+        private readonly string databaseFileName;
+
+
+        public UserDBUsage()
+        {
+            databaseFileName = Path.Combine(AppContext.BaseDirectory, "CarRent.db");
+        }
 
         public void CreateFile()
         {
@@ -18,13 +26,25 @@ namespace RentCars.Services
             }
         }
 
-        public void OpenConnection()
+        private void OpenConnection()
         {
-            string databaseFileName = AppContext.BaseDirectory + @"\CarRent.db";
-            connection = new SqliteConnection("Data Source=" + databaseFileName);
-            connection.Open();
-        }
+            if (connection == null)
+            {
+                connection = new SqliteConnection("Data Source=" + databaseFileName);
+            }
 
+            if (connection.State == ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+        }
+        private void CloseConnection()
+        {
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                connection.Close();
+            }
+        }
 
         public void CreateUserTable()
         {
@@ -36,6 +56,7 @@ namespace RentCars.Services
                 command.CommandText = @"CREATE TABLE IF NOT EXISTS Users([UID] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, [FIRSTNAME] NVARCHAR(64) NOT NULL,[LASTNAME] NVARCHAR(64) NOT NULL, [EMAIL] NVARCHAR(64) NOT NULL, [PASSWORD] NVARCHAR(64) NOT NULL, [PHONE] NVARCHAR(64) NOT NULL, [ADDRESS] NVARCHAR(64) NOT NULL, [ZIP] INTEGER NOT NULL, [CITY] NVARCHAR(64) NOT NULL, [COUNTRY] NVARCHAR(64) NOT NULL, [BIRTHDATE] DATE NOT NULL, [BIRTHCITY] NVARCHAR(64) NOT NULL, [BIRTHCOUNTRY] NVARCHAR(64) NOT NULL, [DLNUMBER] INTEGER NOT NULL, [DLISSUEDATE] DATE NOT NULL, [DLEXPIRYDATE] DATE NOT NULL, [DLISSUECITY] NVARCHAR(64) NOT NULL, [DLISSUECOUNTRY] NVARCHAR(64) NOT NULL, [IDNUMBER] INTEGER NOT NULL, [PASSPORTNUMBER] INTEGER NOT NULL, [PASSPORTEXPIRYDATE] DATE NOT NULL, [PASSPORTISSUEDATE] DATE NOT NULL, [PASSPORTISSUECITY] NVARCHAR(64) NOT NULL, [PASSPORTISSSUECOUNTRY] NVARCHAR(64) NOT NULL)";
                 command.ExecuteNonQuery();
             }
+            CloseConnection();
         }
 
         public void InsertIntoUserTable(string firstName, string lastName, string email, string password, string phone, string address, int zip, string city, string country, DateTime birthDate, string birthCity, string birthCountry, int dlNumber, DateTime dlIssueDate, DateTime dlExpiryDate, string dlIssueCity, string dlIssueCountry, int idNumber, int passportNumber, DateTime passportExpiryDate, DateTime passportIssueDate, string passportIssueCity, string passportIssueCountry)
@@ -73,6 +94,7 @@ namespace RentCars.Services
 
                 command.ExecuteNonQuery();
             }
+            CloseConnection();
         }
 
         public User SelectFromUserTable(string email)
@@ -96,9 +118,12 @@ namespace RentCars.Services
                     user.UID = result.GetInt32(0);
                     user.Email = result.GetString(1);
                     user.Password = result.GetString(2);
+
+                    CloseConnection();
                     return user;
                 }
             }
+            CloseConnection();
             return null;
         }
 
@@ -142,6 +167,7 @@ namespace RentCars.Services
                         PassportIssueCity = result.GetString(22),
                         PassportIssueCountry = result.GetString(23)
                     };
+                    CloseConnection();
                     return user;
                 }
 
@@ -150,7 +176,7 @@ namespace RentCars.Services
             {
                 Console.WriteLine(ex.ToString());
             }
-
+            CloseConnection();
             return null;
         }
     }

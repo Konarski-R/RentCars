@@ -5,52 +5,125 @@
 
 <PageTitle>Rent Success</PageTitle>
 
-<h1>Your receipt</h1>
-
-@if (DataService.Days == 1)
-{
-    <p>@car.CarBrand @car.CarName  ---  @car.CarPrice.ToString("F2") CHF * @DataService.Days.ToString() Day = @PriceTimesDays.ToString("F2") CHF</p>
-}
-else
-{
-    <p>@car.CarBrand @car.CarName  ---  @car.CarPrice.ToString("F2") CHF * @DataService.Days.ToString() Days= @PriceTimesDays.ToString("F2") CHF</p>
-}
-@if (DataService.Plan == "Basic")
-{
-    <p>Plan: Basic --- 0.00 CHF</p>
-}
-else if (DataService.Plan == "Premium")
-{
-    <p>Plan: Premium --- 50.00 CHF</p>
-}
-
-@if (additions.Count != 0)
-{
-    @foreach (Addition a in additions)
-    {
-        <p>@a.Name --- @a.Price.ToString("F2") CHF</p>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('https://www.shutterstock.com/image-photo/blurred-abstract-dealership-store-defocused-600nw-1486381349.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
     }
-}
-@if(DataService.Days == 1)
-{
-    <p>You rented a @car.CarBrand @car.CarName for @DataService.Days day.</p>
-}
-else
-{
-    <p>You rented a @car.CarBrand @car.CarName for @DataService.Days days.</p>
-}
-<p>You chose to pay: <b>@DataService.Paymentmethod</b>.</p>
-<button @onclick="ReturnToHome">Back To Home</button>
+
+    .receipt-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 2px solid #000;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .receipt-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .receipt-item {
+        margin-bottom: 10px;
+    }
+
+    .receipt-total {
+        margin-top: 20px;
+        text-align: right;
+    }
+
+    button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="receipt-container">
+    <div class="receipt-header">
+        <h1>Your receipt</h1>
+    </div>
+
+    <div class="receipt-item">
+        @if (DataService.Days == 1)
+        {
+            <p>@car.CarBrand @car.CarName  ---  @car.CarPrice.ToString("F2") CHF * @DataService.Days.ToString() Day = @PriceTimesDays.ToString("F2") CHF</p>
+        }
+        else
+        {
+            <p>@car.CarBrand @car.CarName  ---  @car.CarPrice.ToString("F2") CHF * @DataService.Days.ToString() Days= @PriceTimesDays.ToString("F2") CHF</p>
+        }
+    </div>
+
+    <div class="receipt-item">
+        @if (DataService.Plan == "Basic")
+        {
+            <p>Plan: Basic --- 0.00 CHF</p>
+        }
+        else if (DataService.Plan == "Premium")
+        {
+            <p>Plan: Premium --- 50.00 CHF</p>
+        }
+    </div>
+
+    @if (additions.Count != 0)
+    {
+        <div class="receipt-item">
+            <h3>Additional Packs:</h3>
+            @foreach (Addition a in additions)
+            {
+                <p>@a.Name --- @a.Price.ToString("F2") CHF</p>
+            }
+        </div>
+    }
+
+    <div class="receipt-item">
+        @if (DataService.Days == 1)
+        {
+            <p>You rented a @car.CarBrand @car.CarName for @DataService.Days day.</p>
+        }
+        else
+        {
+            <p>You rented a @car.CarBrand @car.CarName for @DataService.Days days.</p>
+        }
+    </div>
+
+    <div class="receipt-item">
+        <p>You chose to pay: <b>@DataService.Paymentmethod</b>.</p>
+    </div>
+
+    <div class="receipt-total">
+        <p>Total: @Total.ToString("F2") CHF</p>
+    </div>
+
+    <button @onclick="ReturnToHome">Back To Home</button>
+</div>
+
 @code {
     [Parameter]
     public string CarId { get; set; }
 
-
     public Car car;
     public CarDBUsage carDB = new();
-
     public List<Addition> additions;
-
     public User user;
     public UserDBUsage userDB = new();
 
@@ -75,16 +148,12 @@ else
         {
             Total += a.Price;
         }
+        Thread.Sleep(1000);
     }
 
     public void ReturnToHome()
     {
         DataService.ClearRentData();
         NavigationManager.NavigateTo("/carshow");
-        if (int.TryParse(CarId, out int carId))
-        {
-            carDB.DeleteFromCarTable(carId);
-        }
-
     }
 }

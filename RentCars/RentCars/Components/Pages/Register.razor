@@ -1,6 +1,8 @@
 ﻿@page "/register"
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
+@using System.Security.Cryptography;
+@using System.Text;
 
 <PageTitle>Register</PageTitle>
 
@@ -254,7 +256,10 @@
         {
             if (u is null)
             {
-                db.InsertIntoUserTable(Firstname, Lastname, Email, Password, Phone, Address, ZIP,
+                // Hash the password
+                string hashedPassword = HashPassword(Password);
+
+                db.InsertIntoUserTable(Firstname, Lastname, Email, hashedPassword, Phone, Address, ZIP,
                 City, Country, Birthdate, BirthCity, BirthCountry, DLNumber, DLIssueDate,
                 DLExpiryDate, DLIssueCity, DLIssueCountry, IDNumber, PassportNumber,
                 PassportExpiryDate, PassportIssueDate, PassportIssueCity, PassportIssueCountry);
@@ -270,8 +275,24 @@
         {
             notworked = true;
         }
-
     }
+
+    // Helper method to hash the password using SHA-256
+    private string HashPassword(string password)
+    {
+        using (SHA256 sha256Hash = SHA256.Create())
+        {
+            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                builder.Append(bytes[i].ToString("x2"));
+            }
+            return builder.ToString();
+        }
+    }
+
 
     public void BackToHome()
     {

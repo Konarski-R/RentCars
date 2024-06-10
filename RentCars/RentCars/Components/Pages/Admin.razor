@@ -1,73 +1,150 @@
 ﻿@page "/admin"
 @rendermode InteractiveServer
-<h3>Admin</h3>
+@inject NavigationManager NavigationManager
+
+<PageTitle>Admin Panel</PageTitle>
+
+<style>
+    .admin-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .error-message {
+        color: red;
+        margin-top: 5px;
+    }
+
+    .registered-cars {
+        margin-top: 20px;
+    }
+
+    .back-button {
+        margin-top: 20px;
+    }
+
+</style>
+
+<div class="admin-container">
+    <h3>Admin Panel</h3>
 @if (!IsAdmin)
 {
- <p>Enter Admin Password to add cars into the databse: </p>
- <input type="password" placeholder="Admin password" @bind="input_password"/>
- <button @onclick="CheckPassword">submit</button>
- @if(PasswordError)
- {
-        <div>Password wrong or empty</div>
- }
+    <div>
+        <p>Please enter the admin password to proceed:</p>
+        <input type="password" placeholder="Admin password" @bind="input_password" />
+        <button @onclick="CheckPassword">Submit</button>
+        @if (PasswordError)
+        {
+            <div style="color: red;">Password is incorrect or empty.</div>
+        }
+    </div>
 }
 else
 {
+<div>
+    <div class="form-group">
+        <label for="CarName">Car Model:</label>
+        <input id="CarName" @bind="@CarName" class="form-control" />
+    </div>    
     
-<div class="form-group">
-    <label for="CarName">Car Model:</label>
-    <input id="CarName" @bind="@CarName" class="form-control" />
-</div>
+    <div class="form-group">
+        <label for="CarName">Car Braand:</label>
+        <input id="CarName" @bind="@CarBrand" class="form-control" />
+    </div>
 
-<div class="form-group">
-    <label for="CarBrand">Car Brand:</label>
-    <input id="CarBrand" @bind="@CarBrand" class="form-control" />
-</div>
+    <div class="form-group">
+        <label for="Seats">Seats:</label>
+        <input id="Seats" @bind="@Seats" class="form-control" />
+    </div>
 
-<div class="form-group">
-    <label for="Seats">Seats:</label>
-    <input id="Seats" @bind="@Seats" class="form-control" />
-</div>
+    <div class="form-group">
+        <label for="Doors">Doors:</label>
+        <input id="Doors" @bind="@Doors" class="form-control" />
+    </div>
 
-<div class="form-group">
-    <label for="Doors">Doors:</label>
-    <input id="Doors" @bind="@Doors" class="form-control" />
-</div>
+    <div class="form-group">
+        <label for="IsAutomatic">Is it Automatic:</label>
+        <InputCheckbox id="IsAutomatic" @bind-Value="@IsAutomatic" @onchange="OnCheckboxChanged" />
+        <label>@(IsAutomatic ? "True" : "False")</label>
+    </div>
 
-<div class="form-group">
-    <label for="IsAutomatic">Is it Automatic:</label>
-    <InputCheckbox id="IsAutomatic" @bind-Value="@IsAutomatic" @onchange="OnCheckboxChanged" />
-    <label>@(IsAutomatic ? "True" : "False")</label>
-</div>
+    <div class="form-group">
+        <label for="HorsePwr">Horse Power:</label>
+        <input id="HorsePwr" @bind="@HorsePwr" class="form-control" />
+    </div>
 
-<div class="form-group">
-    <label for="HorsePwr">Horse Power:</label>
-    <input id="HorsePwr" @bind="@HorsePwr" class="form-control" />
-</div>
+    <div class="form-group">
+        <label for="CarPic">Car Pic:</label>
+        <input id="CarPic" @bind="@CarPic" class="form-control" />
+    </div>
 
-<div class="form-group">
-    <label for="CarPic">Car Pic:</label>
-    <input id="CarPic" @bind="@CarPic" class="form-control" />
-</div>
+    <div class="form-group">
+        <label for="CarPrice">Car Price:</label>
+        <input id="CarPrice" @bind="@CarPrice" class="form-control" />
+    </div>
+    <button @onclick="InsertCarBtn" class="btn btn-primary" disabled="@(!CarIsValid())">Register Car</button>
 
-<div class="form-group">
-    <label for="CarPrice">Car Price:</label>
-    <input id="CarPrice" @bind="@CarPrice" class="form-control" />
-</div>
-
-<button @onclick="InsertCarBtn" class="btn btn-primary" disabled="@(!CarIsValid())">Register</button>
-
-    @foreach(Car c in carlist)
+    @if (carlist.Any())
     {
-      <div>
-        <a>@c.CarBrand @c.CarName</a>
-        <button @onclick="(e => DeleteCar(c.CID))">Delete</button>
-      </div>
+        <h4>Registered Cars</h4>
+        <div class="registered-cars">
+        @foreach (Car c in carlist)
+        {
+            <div>
+                <span>@c.CarBrand @c.CarName</span>
+                <button @onclick="(e => DeleteCar(c.CID))">Delete</button>
+            </div>
+        }
+        </div>
     }
-
-
-
+    else
+    {
+        <p>No cars registered yet.</p>
+    }
+</div>
 }
+
+<br />
+<button @onclick="Back" class="back-button">Back to Home</button>
+</div>
 @code {
     private string CarName;
     private string CarBrand;
@@ -129,6 +206,11 @@ else
     {
         db.DeleteFromCarTable(id);
         carlist = db.SelectFromCarTable();
+    }
+
+    public void Back()
+    {
+        NavigationManager.NavigateTo("/");
     }
 }
 

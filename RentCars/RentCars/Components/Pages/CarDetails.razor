@@ -4,35 +4,86 @@
 
 <PageTitle>@car.CarBrand @car.CarName</PageTitle>
 
-<h1>Car Details</h1>
+<style>
+    body {
+        background-image: url('https://www.shutterstock.com/image-photo/blurred-abstract-dealership-store-defocused-600nw-1486381349.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        font-family: Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .car-details-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        max-width: 800px;
+    }
+
+    .car-image {
+        margin-right: 20px;
+    }
+
+    .car-details {
+        max-width: 500px;
+        text-align: left;
+    }
+
+    button {
+        margin: 10px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    .price-detail {
+        opacity: 0.5;
+    }
+
+    .page-title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<h1 class="page-title">Car Details</h1>
 
 @if (car != null)
 {
-    <div>
-        <h2>@car.CarBrand @car.CarName</h2>
-        <p>@car.CarPic</p>
-        <p>Details</p>
-        <p>Seats: @car.Seats</p>
-        <p>Doors: @car.Doors</p>
-        @if (car.IsAutomatic)
-        {
-            <p>Automatic / Manual: Automatic</p>
-        }
-        else
-        {
-            <p>Automatic / Manual: Manual</p>
-        }
-        <p>Price per day*: @car.CarPrice</p>
+    <div class="car-details-container">
+        <img class="car-image" src="@car.CarPic" alt="@car.CarName" width="300" />
+        <div class="car-details">
+            <h2>@car.CarBrand @car.CarName</h2>
+            <p>Seats: @car.Seats</p>
+            <p>Doors: @car.Doors</p>
+            <p>Automatic / Manual: @(car.IsAutomatic ? "Automatic" : "Manual")</p>
+            <p>Price per day*: @car.CarPrice</p>
+            <p class="price-detail">* price may vary for the amount of days</p>
+            <button @onclick="Return">Back to cars</button>
+            <button @onclick="RentCar">Rent</button>
+        </div>
     </div>
-
-    <p>* price may vary for the amount of days</p>
 }
 else
 {
     <p>Car not found.</p>
 }
-<button @onclick="Return">Back to cars</button>
-<button @onclick="RentCar">Rent</button>
 
 @code {
     [Parameter]

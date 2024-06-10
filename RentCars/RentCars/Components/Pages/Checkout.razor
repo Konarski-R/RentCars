@@ -6,40 +6,98 @@
 
 <PageTitle>Checkout</PageTitle>
 
-<h3>Checkout</h3>
-
-@if (DataService.Days == 1)
-{
-    <p>@car.CarBrand @car.CarName  ---  @car.CarPrice.ToString("F2") CHF * @DataService.Days.ToString() Day = @PriceTimesDays.ToString("F2") CHF</p>
-}
-else
-{
-    <p>@car.CarBrand @car.CarName  ---  @car.CarPrice.ToString("F2") CHF * @DataService.Days.ToString() Days= @PriceTimesDays.ToString("F2") CHF</p>
-}
-@if (DataService.Plan == "Basic")
-{
-    <p>Plan: Basic --- 0.00 CHF</p>
-}
-else if (DataService.Plan == "Premium")
-{
-    <p>Plan: Premium --- 50.00 CHF</p>
-}
-
-@if(additions.Count != 0)
-{
-    @foreach(Addition a in additions)
-    {
-        <p>@a.Name --- @a.Price.ToString("F2") CHF</p>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('https://www.shutterstock.com/image-photo/blurred-abstract-dealership-store-defocused-600nw-1486381349.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
     }
-}
 
-<p>Your total amounts to: @Total.ToString("F2") CHF</p>
+    .checkout-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 2px solid #000;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.8);
+    }
 
+    .checkout-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-<button @onclick="ButtonPressPhysical" >Pay in Person</button>
-<button @onclick="ButtonPressDigital" >Pay Digitally</button>
- 
-<p>@DataService.Days</p>
+    .checkout-item {
+        margin-bottom: 10px;
+    }
+
+    button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="checkout-container">
+    <div class="checkout-header">
+        <h3>Checkout</h3>
+    </div>
+
+    <div class="checkout-item">
+        @if (DataService.Days == 1)
+        {
+            <p>@car.CarBrand @car.CarName  ---  @car.CarPrice.ToString("F2") CHF * @DataService.Days.ToString() Day = @PriceTimesDays.ToString("F2") CHF</p>
+        }
+        else
+        {
+            <p>@car.CarBrand @car.CarName  ---  @car.CarPrice.ToString("F2") CHF * @DataService.Days.ToString() Days= @PriceTimesDays.ToString("F2") CHF</p>
+        }
+    </div>
+
+    <div class="checkout-item">
+        @if (DataService.Plan == "Basic")
+        {
+            <p>Plan: Basic --- 0.00 CHF</p>
+        }
+        else if (DataService.Plan == "Premium")
+        {
+            <p>Plan: Premium --- 50.00 CHF</p>
+        }
+    </div>
+
+    @if (additions.Count != 0)
+    {
+        <div class="checkout-item">
+            <h3>Additional Packs:</h3>
+            @foreach (Addition a in additions)
+            {
+                <p>@a.Name --- @a.Price.ToString("F2") CHF</p>
+            }
+        </div>
+    }
+
+    <div class="checkout-item">
+        <p>Your total amounts to: @Total.ToString("F2") CHF</p>
+    </div>
+
+    <button @onclick="ButtonPressPhysical">Pay in Person</button>
+    <button @onclick="ButtonPressDigital">Pay Digitally</button>
+</div>
 
 @code {
     [Parameter]
@@ -71,7 +129,7 @@ else if (DataService.Plan == "Premium")
         {
             Total += 50;
         }
-        foreach(Addition a in additions)
+        foreach (Addition a in additions)
         {
             Total += a.Price;
         }
@@ -79,7 +137,7 @@ else if (DataService.Plan == "Premium")
 
     public void ButtonPressPhysical()
     {
-        DataService.Paymentmethod = "in person"; 
+        DataService.Paymentmethod = "in person";
         NavigationManager.NavigateTo($"/result/{CarId}");
     }
 

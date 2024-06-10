@@ -3,6 +3,8 @@
 @inject NavigationManager NavigationManager
 @inject DataService DataService
 @rendermode InteractiveServer
+@using System.Security.Cryptography;
+@using System.Text;
 
 <PageTitle>Log In</PageTitle>
 
@@ -116,7 +118,8 @@
 
         if (user != null)
         {
-            if (user.Password == password)
+            string hashedPassword = HashPassword(password);
+            if (user.Password == hashedPassword)
             {
                 DataService.SharedUserID = user.UID;
                 NavigationManager.NavigateTo("/carshow");
@@ -131,6 +134,22 @@
             loginError = true;
         }
     }
+
+    private string HashPassword(string password)
+    {
+        using (SHA256 sha256Hash = SHA256.Create())
+        {
+            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                builder.Append(bytes[i].ToString("x2"));
+            }
+            return builder.ToString();
+        }
+    }
+
     public void MoveToRegister()
     {
         NavigationManager.NavigateTo("/register");
