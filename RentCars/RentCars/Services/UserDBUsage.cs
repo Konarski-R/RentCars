@@ -82,7 +82,7 @@ namespace RentCars.Services
 
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = "SELECT UID, EMAIL, PASSWORD from Users where EMAIL = '" + email + "';";
+                command.CommandText = "SELECT UID, EMAIL, PASSWORD FROM Users WHERE EMAIL = '" + email + "';";
                 var result = command.ExecuteReader();
                 while (result.Read())
                 {
