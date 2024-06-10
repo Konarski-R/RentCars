@@ -4,12 +4,125 @@
 
 <PageTitle>Register</PageTitle>
 
+<div class="register-page">
+    <h1 class="title">Register</h1>
+    <div class="form-container">
+        <h3>Sign In</h3>
+
+        <label for="Firstname">First Name:</label>
+        <input id="Firstname" @bind="@Firstname" class="half-width" />
+
+        <label for="Lastname">Last Name:</label>
+        <input id="Lastname" @bind="@Lastname" class="half-width" />
+
+        <label for="CellPhone">Cell/Phone:</label>
+        <input id="CellPhone" @bind="@Phone" class="half-width" />
+
+        <label for="Email">E-Mail:</label>
+        <input id="Email" @bind="@Email" class="half-width" />
+
+        <label for="Password">Password:</label>
+        <input type="password" id="Password" @bind="@Password" class="half-width" />
+
+        <label for="AddressLine1">Address:</label>
+        <input id="AddressLine1" @bind="@Address" class="half-width" />
+
+        <label for="ZIPCode">ZIP Code:</label>
+        <input id="ZIPCode" @bind="@ZIP" class="half-width" />
+
+        <label for="City">City:</label>
+        <input id="City" @bind="@City" class="half-width" />
+
+        <label for="Country">Country:</label>
+        <input id="Country" @bind="@Country" class="half-width"></input>
+
+        <label for="BirthDate">Birth Date:</label>
+        <input id="BirthDate" @bind="@Birthdate" type="date" class="third-width" />
+
+        <label for="BirthCity">Birth City:</label>
+        <input id="BirthCity" @bind="@BirthCity" class="half-width" />
+
+        <label for="BirthCountry">Birth Country:</label>
+        <input id="BirthCountry" @bind="@BirthCountry" class="half-width"></input>
+
+        <div class="section-title">Driver License</div>
+
+        <label for="DLNumber">Driver License Number:</label>
+        <input id="DLNumber" @bind="@DLNumber" class="half-width" />
+
+        <label for="DLIssueDate">Issue Date:</label>
+        <input id="DLIssueDate" @bind="@DLIssueDate" type="date" class="third-width" />
+
+        <label for="DLExpiryDate">Expiry Date:</label>
+        <input id="DLExpiryDate" @bind="@DLExpiryDate" type="date" class="third-width" />
+
+        <label for="DLIssueCity">Issue City:</label>
+        <input id="DLIssueCity" @bind="@DLIssueCity" class="third-width" />
+
+        <label for="DLIssueCountry">Issue Country:</label>
+        <input id="DLIssueCountry" @bind="@DLIssueCountry" class="third-width" />
+
+        <div class="section-title">ID and Passport</div>
+
+        <label for="IDNumber">ID Number:</label>
+        <input id="IDNumber" @bind="@IDNumber" class="half-width" />
+
+        <label for="PassportNumber">Passport ID:</label>
+        <input id="PassportNumber" @bind="@PassportNumber" class="half-width" />
+
+        <label for="PassportIssueDate">Issue Date:</label>
+        <input id="PassportIssueDate" @bind="@PassportIssueDate" type="date" class="third-width" />
+
+        <label for="PassportExpiryDate">Expiry Date:</label>
+        <input id="PassportExpiryDate" @bind="@PassportExpiryDate" type="date" class="third-width" />
+
+        <label for="PassportIssueCity">Issue City:</label>
+        <input id="PassportIssueCity" @bind="@PassportIssueCity" class="third-width" />
+
+        <label for="PassportIssueCountry">Issue Country:</label>
+        <input id="PassportIssueCountry" @bind="@PassportIssueCountry" class="third-width" />
+        @if (notworked)
+        {
+            <p style="color:red;">Registration failed. Please ensure all fields are filled correctly.</p>
+        }
+        @if (userexists)
+        {
+            <p style="color:red;">Registration failed. User with the same email already exists.</p>
+        }
+        <div class="button-group">
+            <button @onclick="RegisterBtn" class="button">Next</button>
+            <button @onclick="BackToHome" class="button">Back To Home</button>
+        </div>
+    </div>
+</div>
+
 <style>
+    .register-page {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-image: url('https://www.shutterstock.com/image-photo/blurred-abstract-dealership-store-defocused-600nw-1486381349.jpg');
+        background-size: cover;
+        background-position: center;
+        text-align: center;
+        color: white;
+        text-shadow: 2px 2px 4px #000000;
+    }
+
+    .title {
+        font-size: 4em;
+        margin-bottom: 1em;
+    }
+
     .form-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
         width: 900px;
         margin: 0 auto;
-        border: 1px solid #000;
-        padding: 20px;
+        color: #333;
+        text-shadow: none;
     }
 
         .form-container label {
@@ -23,6 +136,7 @@
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #000;
+            border-radius: 5px;
         }
 
         .form-container .half-width {
@@ -45,101 +159,27 @@
             font-weight: bold;
         }
 
-        .form-container button {
-            padding: 10px 20px;
-            cursor: pointer;
+    .button-group {
+        display: flex;
+        gap: 1em;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .button {
+        padding: 10px 20px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: rgba(0, 123, 255, 0.8);
+        color: white;
+    }
+
+        .button:hover {
+            background-color: rgba(0, 86, 179, 0.8);
         }
 </style>
-
-<div class="form-container">
-    <h3>Sign In</h3>
-
-    <label for="Firstname">First Name:</label>
-    <input id="Firstname" @bind="@Firstname" class="half-width" />
-
-    <label for="Lastname">Last Name:</label>
-    <input id="Lastname" @bind="@Lastname" class="half-width" />
-
-    <label for="CellPhone">Cell/Phone:</label>
-    <input id="CellPhone" @bind="@Phone" class="half-width" />
-
-    <label for="Email">E-Mail:</label>
-    <input id="Email" @bind="@Email" class="half-width" />
-
-    <label for="Password">Password:</label>
-    <input type="password" id="Password" @bind="@Password" class="half-width" />
-
-    <label for="AddressLine1">Address:</label>
-    <input id="AddressLine1" @bind="@Address" class="half-width" />
-
-    <label for="ZIPCode">ZIP Code:</label>
-    <input id="ZIPCode" @bind="@ZIP" class="half-width" />
-
-    <label for="City">City:</label>
-    <input id="City" @bind="@City" class="half-width" />
-
-    <label for="Country">Country:</label>
-    <input id="Country" @bind="@Country" class="half-width"></input>
-    
-    <label for="BirthDate">Birth Date:</label>
-    <input id="BirthDate" @bind="@Birthdate" type="date" class="third-width" />
-
-    <label for="BirthCity">Birth City:</label>
-    <input id="BirthCity" @bind="@BirthCity" class="half-width" />
-
-    <label for="BirthCountry">Birth Country:</label>
-    <input id="BirthCountry" @bind="@BirthCountry" class="half-width"></input>
-
-    <div class="section-title">Driver License</div>
-
-    <label for="DLNumber">Driver License Number:</label>
-    <input id="DLNumber" @bind="@DLNumber" class="half-width" />
-
-    <label for="DLIssueDate">Issue Date:</label>
-    <input id="DLIssueDate" @bind="@DLIssueDate" type="date" class="third-width" />
-
-    <label for="DLExpiryDate">Expiry Date:</label>
-    <input id="DLExpiryDate" @bind="@DLExpiryDate" type="date" class="third-width" />
-
-    <label for="DLIssueCity">Issue City:</label>
-    <input id="DLIssueCity" @bind="@DLIssueCity" class="third-width" />
-
-    <label for="DLIssueCountry">Issue Country:</label>
-    <input id="DLIssueCountry" @bind="@DLIssueCountry" class="third-width" />
-
-    <div class="section-title">ID and Passport</div>
-
-    <label for="IDNumber">ID Number:</label>
-    <input id="IDNumber" @bind="@IDNumber" class="half-width" />
-
-    <label for="PassportNumber">Passport ID:</label>
-    <input id="PassportNumber" @bind="@PassportNumber" class="half-width" />
-
-    <label for="PassportIssueDate">Issue Date:</label>
-    <input id="PassportIssueDate" @bind="@PassportIssueDate" type="date" class="third-width" />
-
-    <label for="PassportExpiryDate">Expiry Date:</label>
-    <input id="PassportExpiryDate" @bind="@PassportExpiryDate" type="date" class="third-width" />
-
-    <label for="PassportIssueCity">Issue City:</label>
-    <input id="PassportIssueCity" @bind="@PassportIssueCity" class="third-width" />
-
-    <label for="PassportIssueCountry">Issue Country:</label>
-    <input id="PassportIssueCountry" @bind="@PassportIssueCountry" class="third-width" />
-    <div>
-        <button @onclick="RegisterBtn">Next</button>
-        <button @onclick="BackToHome">Back To Home</button>
-    </div>
-    @if (notworked)
-    {
-        <p style="color:red;">Registration failed. Please ensure all fields are filled correctly.</p>
-    }
-    @if (userexists)
-    {
-        <p style="color:red;">Registration failed. User with the same email already exists.</p>
-    }
-</div>
-
 
 @code {
     private string Firstname;

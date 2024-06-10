@@ -7,12 +7,33 @@
 <PageTitle>Log In</PageTitle>
 
 <style>
+    body, html {
+        height: 100%;
+        margin: 0;
+    }
+
+    .background {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-image: url('https://www.shutterstock.com/image-photo/blurred-abstract-dealership-store-defocused-600nw-1486381349.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        text-align: center;
+        color: white;
+        text-shadow: 2px 2px 4px #000000;
+    }
+
     .login-container {
         width: 400px;
-        margin: 0 auto;
-        border: 1px solid #000;
         padding: 20px;
         text-align: center;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
         .login-container label {
@@ -26,45 +47,60 @@
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #000;
+            border-radius: 5px;
         }
 
         .login-container button {
             padding: 10px 20px;
             margin-top: 10px;
             cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
         }
 
         .login-container .signup-link {
             display: block;
             margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
         }
+
+            .login-container .signup-link:hover {
+                text-decoration: underline;
+            }
 
         .login-container .error {
             color: red;
         }
 </style>
 
-<div class="login-container">
-    <h3>Login</h3>
+<div class="background">
+    <div class="login-container">
+        <h3>Login</h3>
 
-    <label for="email">Email</label>
-    <input type="text" id="email" @bind="username" />
+        <label for="email">Email</label>
+        <input type="text" id="email" @bind="username" />
 
-    <label for="password">Password</label>
-    <input type="password" id="password" @bind="password" />
+        <label for="password">Password</label>
+        <input type="password" id="password" @bind="password" />
 
-    <button @onclick="LogIn">Login</button>
+        <button @onclick="LogIn">Login</button>
 
-    @if (!samepw)
-    {
-        <div class="error">The password is wrong.</div>
-    }
-    @if (loginError)
-    {
-        <div class="error">Invalid username or password.</div>
-    }
+        <button @onclick="BackToHome">Back To Home</button>
 
-    <a href="javascript:void(0);" @onclick="MoveToRegister" class="signup-link">Click here to sign up</a>
+        @if (!samepw)
+        {
+            <div class="error">The password is wrong.</div>
+        }
+        @if (loginError)
+        {
+            <div class="error">Invalid username or password.</div>
+        }
+
+        <a href="javascript:void(0);" @onclick="MoveToRegister" class="signup-link">Click here to sign up</a>
+    </div>
 </div>
 
 @code {
@@ -98,5 +134,10 @@
     public void MoveToRegister()
     {
         NavigationManager.NavigateTo("/register");
+    }
+
+    public void BackToHome()
+    {
+        NavigationManager.NavigateTo("/", true, true);
     }
 }
