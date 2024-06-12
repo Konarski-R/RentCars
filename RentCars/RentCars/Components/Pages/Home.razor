@@ -5,6 +5,19 @@
 <PageTitle>Home</PageTitle>
 
 <div class="landing-page">
+    <div class="info-icon">
+        @if (!showTooltip)
+        {
+            <p @onclick="ToggleTooltip">Questions or Feedbacks ?</p>
+        }
+        @if (showTooltip)
+        {
+            <p @onclick="ToggleTooltip">X</p>
+            <div class="info-tooltip">
+                If you have any questions or feedback send an Email to: yunes1703cloud.com
+            </div>
+        }
+    </div>
     <h1 class="title">Rent Cars</h1>
     <div class="button-group">
         <button @onclick="MoveToLogin" class="button">Login</button>
@@ -26,6 +39,7 @@
         text-align: center;
         color: white;
         text-shadow: 2px 2px 4px #000000;
+        position: relative;
     }
 
     .title {
@@ -52,11 +66,33 @@
         .button:hover {
             background-color: rgba(0, 86, 179, 0.8);
         }
+
+    .info-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 1.5em;
+    }
+
+    .info-tooltip {
+        position: absolute;
+        top: 30px;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        width: 300px;
+        text-align: left;
+    }
 </style>
 
 @code {
     static UserDBUsage Userdb = new();
     static CarDBUsage Cardb = new();
+
+    private bool showTooltip = false;
 
     protected override void OnInitialized()
     {
@@ -73,5 +109,10 @@
     public void MoveToRegister()
     {
         NavigationManager.NavigateTo("/register");
+    }
+
+    private void ToggleTooltip()
+    {
+        showTooltip = !showTooltip;
     }
 }

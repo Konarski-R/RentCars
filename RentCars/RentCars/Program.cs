@@ -13,6 +13,8 @@ namespace RentCars
             builder.Services.AddRazorComponents()
 				.AddInteractiveServerComponents();
 			builder.Services.AddSingleton<DataService>();
+			builder.Services.AddSingleton<UserDBUsage>();
+			builder.Services.AddSingleton<CarDBUsage>();
 
 			var app = builder.Build();
 

@@ -256,7 +256,6 @@
         {
             if (u is null)
             {
-                // Hash the password
                 string hashedPassword = HashPassword(Password);
 
                 db.InsertIntoUserTable(Firstname, Lastname, Email, hashedPassword, Phone, Address, ZIP,
@@ -277,7 +276,6 @@
         }
     }
 
-    // Helper method to hash the password using SHA-256
     private string HashPassword(string password)
     {
         using (SHA256 sha256Hash = SHA256.Create())
