@@ -6,8 +6,8 @@ Unsere Softwareanwendung ist eine umfassende Plattform für die Verwaltung von A
 
 ## Features
 
-**Account erstellug**
-**Fahrzeuge hinzufügen und löschen**
+**Account erstellug** <br>
+**Fahrzeuge hinzufügen und löschen** <br>
 **Vermietungsprozess simulieren**
 
 ## Datentypen
