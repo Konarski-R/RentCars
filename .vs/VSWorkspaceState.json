@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\RentCars",
+    "\\RentCars\\RentCars",
+    "\\RentCars\\RentCars\\Components",
+    "\\RentCars\\RentCars\\Components\\Pages"
+  ],
+  "SelectedNode": "\\RentCars\\RentCars\\Components\\Pages\\Register.razor",
+  "PreviewInSolutionExplorer": false
+}
