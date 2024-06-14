@@ -81,6 +81,10 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 10px;
     }
+
+    .error {
+        color: red;
+    }
 </style>
 
 <div class="main-container">
@@ -125,11 +129,6 @@
             </div>
         </div>
 
-        @if (PlanNotChosen)
-        {
-            <div>Please choose your plan</div>
-        }
-
         <h3>Extras</h3>
         <div class="additions">
             @foreach (Addition a in AllAdditions)
@@ -152,6 +151,12 @@
         </div>
 
         <button class="checkout" @onclick="FinalCheckout">Check out</button>
+
+        @if (PlanNotChosen)
+        {
+            <div class="error">Please choose your plan</div>
+        }
+
     }
 
     <button @onclick="BackToCarShow">Return To all cars</button>
@@ -176,12 +181,12 @@
     public bool PlanNotChosen = false;
 
     List<Addition> AllAdditions = new List<Addition>{
-        new Addition("Name", "Desc", "link", 250.50),
-        new Addition("Extra1", "Extra Description 1", "link1", 30.0),
-        new Addition("Extra2", "Extra Description 2", "link2", 40.0),
-        new Addition("Extra3", "Extra Description 3", "link3", 50.0),
-        new Addition("Extra4", "Extra Description 4", "link4", 60.0),
-        new Addition("Extra5", "Extra Description 5", "link5", 70.0),
+        new Addition("Additional Driver", "If you want other people to drive as well", "https://as2.ftcdn.net/v2/jpg/01/92/21/41/1000_F_192214150_m2JMzBOfXcjL1BJUBpt4SFoAVugrvz5Y.jpg", 42.75),
+        new Addition("Snow Chains", "Fit onto your tyres to make it safer to drive in snowy conditions", "https://cdn1.iconfinder.com/data/icons/tires/500/Tire-wheel-Garage-part_11-512.png", 44.85),
+        new Addition("Baby seat", "For bigger children: 18-45 kg / 40-100 lbs (about 4-11 years old)", "https://cdn1.iconfinder.com/data/icons/car-engine-dashboard-lights-outline-set-2/91/Car_Engine_-_Dashboard_Lights_73-512.png", 69.95),
+        new Addition("Ski rack", "Magnetic ski rack for up to 2 pairs of ski/snowboard", "https://cdn-icons-png.flaticon.com/512/4549/4549943.png", 59.0),
+        new Addition("Cross border fee", "Fee to bring the car over the border into a EU country", "https://icons.veryicon.com/png/o/business/icon-library-of-banking-products/cross-border-finance.png", 75.0),
+        new Addition("Guaranteed navigation system", "Arrive at your destination safely and on time. Save time by choosing the fastest route and stay safe on the road, even in unfamiliar environments.", "https://static.thenounproject.com/png/190790-200.png", 250.45),
     };
 
     protected override void OnInitialized()
